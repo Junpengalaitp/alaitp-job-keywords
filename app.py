@@ -1,11 +1,12 @@
 from flask import Flask
+from flask_restful import Api
+
+from resources.keywords import Keywords
 
 app = Flask(__name__)
+api = Api(app)
 
-
-@app.route('/')
-def hello_world():
-    return 'Hello World!'
+api.add_resource(Keywords, "/keywords/<string:job_id>")
 
 
 if __name__ == '__main__':
