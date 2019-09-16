@@ -1,3 +1,5 @@
+from collections import Counter, OrderedDict
+
 from database.MongodbManager import MongoManager
 from keywords.spacy_processing import generate_key_words_from_job_desc
 
@@ -19,10 +21,18 @@ def get_job_text_from_mongo(job_obj_id: str) -> str:
 
 def process_jobs(cache_id: str) -> dict:
     job_texts = get_job_text_from_mongo_cache(cache_id)
-    keywords_list = []
+    keywords_dict = {}
     for text in job_texts.values():
-        keywords_list.append(generate_key_words_from_job_desc(text))
-    return keywords_list
+        keywords = generate_key_words_from_job_desc(text)
+        for key in keywords:
+            if key not in keywords_dict:
+                keywords_dict[key] = keywords[key]
+            else:
+                for keyword in keywords[key]:
+                    keywords_dict[key].append(keyword)
+    for key in keywords_dict:
+        keywords_dict[key] = OrderedDict(Counter(keywords_dict[key]).most_common())
+    return keywords_dict
 
 
 def get_job_text_from_mongo_cache(cache_id: str) -> str:
