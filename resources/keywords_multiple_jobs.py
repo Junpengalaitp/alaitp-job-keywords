@@ -1,9 +1,6 @@
-import logging
-
 from flask_restful import Resource, reqparse
 
 from keywords.keyword_generator import process_jobs
-from keywords.spacy_processing import generate_key_words_from_job_desc
 
 
 class KeywordsMultiJobs(Resource):
