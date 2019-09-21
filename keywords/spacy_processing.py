@@ -1,11 +1,9 @@
 import spacy
-from multiprocessing import Manager
 
 nlp = spacy.load('job_model')
 
 
 def generate_key_words_from_job_desc(job_desc_text: str) -> dict:
-
 
     doc = nlp(job_desc_text)
 

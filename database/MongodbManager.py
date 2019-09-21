@@ -1,29 +1,26 @@
-import logging
 from bson.objectid import ObjectId
-
 from pymongo import MongoClient
 
-from config import read_config
+from config.read_config import get_config
 
 
 class MongoManager:
     def __init__(self):
-        mongo_ip = '127.0.0.1'
-        mongo_port = 27017
-        # username = read_config.get_config('mongodb', 'username')
-        # password = read_config.get_config('mongodb', 'password')
-        # self.client = MongoClient(f'mongodb://{username}:{password}@{mongo_ip}', mongo_port)
-        self.client = MongoClient(f'mongodb://{mongo_ip}', int(mongo_port))
+        mongo_ip = get_config('MONGODB', 'ip')
+        mongo_port = get_config('MONGODB', 'port')
+        username = get_config('MONGODB', 'username')
+        password = get_config('MONGODB', 'password')
+        db = get_config('MONGODB', 'db')
+        client = MongoClient(f'mongodb://{username}:{password}@{mongo_ip}', int(mongo_port))
+        database = client[db]
+        self.collection = database[get_config('MONGODB', 'collection')]
 
     def find_one_by_obj_id(self, obj_id):
-        db = self.client.stackoverflow_jobs_remote
-        job = db.software_dev.find_one({'_id': ObjectId(obj_id)})
+        job = self.collection.find_one({'_id': ObjectId(obj_id)})
         return job
 
-    def find_by_cache_id(self, cache_id):
-        db = self.client.job_cache
-        job = db.cache.find_one({'id': cache_id})
-        return job
-
+    def find_all(self):
+        all_jobs = self.collection.find()
+        return [job for job in all_jobs]
 
 
