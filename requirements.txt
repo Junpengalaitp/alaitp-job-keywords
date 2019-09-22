@@ -1,4 +1,5 @@
-flask=1.1.1
-flask_restful=0.3.7
-spacy=2.1.8
-pymongo=3.9.0
+PyYAML
+flask==1.1.1
+flask_restful==0.3.7
+spacy==2.1.8
+pymongo==3.9.0

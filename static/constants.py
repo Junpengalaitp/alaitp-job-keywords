@@ -1,0 +1,22 @@
+standard_words = {
+    'JavaScript': ['JS', 'Javascript', 'javascript'],
+    'Python': ['python'],
+    'Java': ['java', 'Java8', 'java8', 'Java11', 'java11'],
+    'Node.js': ['NodeJs', 'NodeJS', 'node.js', 'Node.js', 'Node', 'node'],
+    'HTML': ['HTML5'],
+    'JSON': ['Json', 'json'],
+    'jQuery': ['Jquery', 'JQuery'],
+    'MongoDB': ['mongo', 'Mongo', 'MongoDb', 'mongodb', 'Mongo DB'],
+    'Test-Driven Development': ['Test Driven Development', 'TDD'],
+    'EcmaScript': ['ES2015', 'ES5', 'ES6', 'ES5/ES6', 'ES', 'ES7', 'EcmaScript', 'Ecmascript'],
+    'MySQL': ['MySql',],
+    'C': ['c'],
+    'C++': ['c++', ],
+    'TypeScript': ['Typescript'],
+    'CSS': ['css', 'CSS3', 'css3', 'CSS4', 'css4'],
+    'Erlang': ['erlang'],
+    'Go': ['GO', 'go', 'Golang', 'GoLang'],
+    'React': ['react', 'react.js'],
+    'Ruby on Rails': ['Rails', 'rails'],
+
+}

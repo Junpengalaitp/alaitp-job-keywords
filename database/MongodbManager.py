@@ -23,4 +23,7 @@ class MongoManager:
         all_jobs = self.collection.find()
         return [job for job in all_jobs]
 
+    def find_by_source(self, source):
+        all_jobs = self.collection.find({'source': source})
+        return [job for job in all_jobs]
 

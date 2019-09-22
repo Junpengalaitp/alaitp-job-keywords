@@ -7,7 +7,7 @@ app = Flask(__name__)
 api = Api(app)
 
 # api.add_resource(KeywordSingleJob, "/keywords/<string:job_id>")
-api.add_resource(KeywordsMultiJobs, "/keywords-all")
+api.add_resource(KeywordsMultiJobs, "/keywords/<string:source>")
 
 if __name__ == '__main__':
     app.run(debug=False)
