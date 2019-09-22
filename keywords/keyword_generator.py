@@ -1,10 +1,16 @@
 import json
+import logging
 import time
 from collections import Counter, OrderedDict
 from multiprocessing import Manager, Process, current_process
 
 from database.MongodbManager import MongoManager
 from keywords.spacy_processing import generate_key_words_from_job_desc
+from logger.logger import setup_logging
+
+setup_logging()
+logger = logging.getLogger("fileLogger")
+
 
 standard_words = {
     'JavaScript': ['JS', 'Javascript', 'javascript'],
@@ -24,7 +30,9 @@ standard_words = {
     'CSS': ['css', 'CSS3', 'css3', 'CSS4', 'css4'],
     'Erlang': ['erlang'],
     'Go': ['GO', 'go', 'Golang', 'GoLang'],
-    'React': ['react',]
+    'React': ['react', 'react.js'],
+    'Ruby on Rails': ['Rails', 'rails'],
+
 }
 
 
@@ -42,15 +50,11 @@ def get_all_jobs() -> list:
     return [job['job_desc'] for job in jobs_list]
 
 
-def start_process():
-    print('Starting', current_process().name)
-
-
 def process_jobs() -> dict:
     start = time.perf_counter()
     job_texts = get_all_jobs()
     end = time.perf_counter()
-    print(f'Job retrieving finished in {round(end - start, 4)} seconds')
+    logging.info(f'Job retrieving finished in {round(end - start, 4)} seconds')
 
     start = time.perf_counter()
     # Multiprocessing for signal job keywords
@@ -83,7 +87,7 @@ def process_jobs() -> dict:
         keywords_dict[standard_name] = OrderedDict(Counter(keywords_dict[standard_name]).most_common())
 
     end = time.perf_counter()
-    print(f'Jobs keyword generation finished in {round(end - start, 4)} seconds')
+    logger.info(f'Jobs keyword generation finished in {round(end - start, 4)} seconds')
     return keywords_dict  # convert to json to keep the order during transaction
 
 
