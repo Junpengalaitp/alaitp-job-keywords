@@ -21,6 +21,24 @@ def get_all_jobs(source: str = 'all') -> list:
     return [job['job_desc'] for job in jobs_list]
 
 
+def process_job_description(job_description_list: list) -> dict:
+    start = time.perf_counter()
+    job_texts = [job['jobDescriptionText'] for job in job_description_list]
+    keywords_list = []
+    for text in job_texts:
+        keywords_list.append(generate_key_words_from_job_desc(text))
+
+    keywords_dict = add_result_to_dict(keywords_list)
+
+    standardize_keywords(keywords_dict)
+
+    sort_keywords_dict(keywords_dict)
+
+    end = time.perf_counter()
+    logger.info(f'Jobs keyword generation finished in {round(end - start, 4)} seconds,')
+    return keywords_dict  # convert to json to keep the order during transaction
+
+
 def process_jobs(source: str = 'all') -> dict:
     start = time.perf_counter()
     job_texts = get_all_jobs(source)
@@ -39,8 +57,6 @@ def process_jobs(source: str = 'all') -> dict:
     keywords_dict = add_result_to_dict(keywords_list)
 
     standardize_keywords(keywords_dict)
-
-    sort_keywords_dict(keywords_dict)
 
     end = time.perf_counter()
     logger.info(f'Jobs keyword generation finished in {round(end - start, 4)} seconds,')
