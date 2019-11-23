@@ -89,6 +89,6 @@ def standardize_keywords(keywords_dict: dict) -> None:
 
 
 def sort_keywords_dict(keywords_dict: dict) -> None:
-    # Count and sort keywords
+    # return top 20 keywords
     for standard_name in keywords_dict:
-        keywords_dict[standard_name] = OrderedDict(Counter(keywords_dict[standard_name]).most_common())
+        keywords_dict[standard_name] = dict(Counter(keywords_dict[standard_name]).most_common(20))
