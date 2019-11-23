@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from keywords.keyword_generator import get_all_jobs
+from service.MongoService import get_all_jobs
 
 
 class TestGeJobTextFromMongo(TestCase):
