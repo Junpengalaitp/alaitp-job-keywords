@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from keywords.keyword_generator import process_job, process_jobs
+from keyword_processing.keyword_generator import process_job, process_jobs
 
 
 class TestProcessJob(TestCase):

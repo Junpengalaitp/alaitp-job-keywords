@@ -2,7 +2,7 @@ import logging
 
 from flask_restful import Resource, reqparse
 
-from keywords.keyword_generator import process_jobs
+from keyword_processing.keyword_generator import process_jobs
 from logger.logger import setup_logging
 
 setup_logging()
