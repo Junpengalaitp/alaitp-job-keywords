@@ -18,16 +18,16 @@ api = Api(app)
 api.add_resource(KeywordsMongo, "/keyword_processing/<string:source>")
 
 
+# @app.route('/keywords', methods=['POST'])
+# def get_keywords():
+#     job_description_data = json.loads(request.data)
+#     logging.info(job_description_data)
+#     job_keyword_dict = process_job_description(job_description_data)
+#     logging.info(f"job keyword_processing dict generated: {job_keyword_dict}")
+#     return job_keyword_dict
+
+
 @app.route('/keywords', methods=['POST'])
-def get_keywords():
-    job_description_data = json.loads(request.data)
-    logging.info(job_description_data)
-    job_keyword_dict = process_job_description(job_description_data)
-    logging.info(f"job keyword_processing dict generated: {job_keyword_dict}")
-    return job_keyword_dict
-
-
-@app.route('/single-job-keywords', methods=['POST'])
 def get_job_keywords():
     job_description_data = json.loads(request.data)
     logging.info(job_description_data)
