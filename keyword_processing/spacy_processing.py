@@ -6,7 +6,7 @@ nlp = spacy.load('job_model')
 
 
 def generate_key_words_from_job_desc(job_desc_text: str) -> dict:
-    job_desc_text = get_cleaned_text(job_desc_text)
+    # job_desc_text = get_cleaned_text(job_desc_text)
 
     doc = nlp(job_desc_text)
 
