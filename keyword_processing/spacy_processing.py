@@ -13,7 +13,7 @@ def generate_key_words_from_job_desc(job_desc_text: str) -> dict:
     keywords_dict = {}
 
     for ent in doc.ents:
-        keyword_index = str(ent.start_char) + ', ' + str(ent.end_char)
+        keyword_index = str(ent.start_char) + ',' + str(ent.end_char)
         if ent.label_ not in keywords_dict:
             keywords_dict[ent.label_] = {keyword_index: ent.text}
             # keywords_dict[ent.label_] = [ent.text]
