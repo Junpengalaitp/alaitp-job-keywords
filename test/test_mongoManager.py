@@ -2,7 +2,7 @@ import logging
 
 from unittest import TestCase, skip
 
-from database.MongodbManager import MongoManager
+from database.mongodb_manager import MongoManager
 
 
 class TestMongoManager(TestCase):

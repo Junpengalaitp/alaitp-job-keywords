@@ -11,7 +11,7 @@ config['mongodb'] = {
     'authSource': 'admin'
 }
 
-config['mysql'] = {
+config['MYSQL'] = {
     'ip': '192.168.1.39',
     'dbname': 'alaitp',
     'port': '3307',

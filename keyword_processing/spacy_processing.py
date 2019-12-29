@@ -1,3 +1,5 @@
+from collections import defaultdict
+
 import spacy
 
 from pre_processing.text_clean import get_cleaned_text
@@ -10,16 +12,12 @@ def generate_key_words_from_job_desc(job_desc_text: str) -> dict:
 
     doc = nlp(job_desc_text)
 
-    keywords_dict = {}
+    keywords_dict = defaultdict(dict)
 
     for ent in doc.ents:
         keyword_index = str(ent.start_char) + ',' + str(ent.end_char)
-        if ent.label_ not in keywords_dict:
-            keywords_dict[ent.label_] = {keyword_index: ent.text}
-            # keywords_dict[ent.label_] = [ent.text]
-        else:
+        if len(ent.text) > 1 or ent.text in ('c', 'C'):
             keywords_dict[ent.label_][keyword_index] = ent.text
-            # keywords_dict[ent.label_].append(ent.text)
 
     return keywords_dict
 

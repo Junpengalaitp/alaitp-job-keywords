@@ -1,4 +1,4 @@
-from database.MongodbManager import MongoManager
+from database.mongodb_manager import MongoManager
 
 
 def get_all_jobs(source: str = 'all') -> list:

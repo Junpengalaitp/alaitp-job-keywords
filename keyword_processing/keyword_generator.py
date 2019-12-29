@@ -7,7 +7,7 @@ from typing import List, Dict
 from keyword_processing.spacy_processing import generate_key_words_from_job_desc
 from logger.logger import setup_logging
 from post_processing.keyword_clean import standardize_keywords
-from service.MongoService import get_all_jobs
+from service.mongo_service import get_all_jobs
 
 setup_logging()
 logger = logging.getLogger("fileLogger")

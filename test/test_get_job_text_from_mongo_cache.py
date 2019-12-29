@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from service.MongoService import get_all_jobs
+from service.mongo_service import get_all_jobs
 
 
 class TestGeJobTextFromMongo(TestCase):

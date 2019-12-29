@@ -11,7 +11,7 @@ class MongoManager:
         username = get_config('MONGODB', 'username')
         password = get_config('MONGODB', 'password')
         db = get_config('MONGODB', 'db')
-        client = MongoClient(f'mongodb://{username}:{password}@{mongo_ip}', int(mongo_port))
+        client = MongoClient(f'mongodb://{mongo_ip}', int(mongo_port))
         database = client[db]
         self.collection = database[get_config('MONGODB', 'collection')]
 

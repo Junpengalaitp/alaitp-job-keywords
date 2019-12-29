@@ -1,14 +1,11 @@
 import logging
 import re
 
-from fuzzywuzzy import fuzz
+import requests
 
-from static.constants import standard_words
+from static.constants import standard_words_map
 
-standard_word_list = list(standard_words.keys())
-
-
-# standard_word_list = ['React', 'Node.js']
+standard_word_list = list(standard_words_map.keys())
 
 
 def standardize_keywords(keyword_dict: dict):
@@ -20,14 +17,10 @@ def standardize_keywords(keyword_dict: dict):
 
 
 def get_standard_word(keyword: str) -> str:
-    if keyword not in standard_word_list:
-        for standard_word in standard_word_list:
-            ratio = fuzz.ratio(re.sub(r"[^a-zA-Z0-9+#]+", ' ', standard_word).lower(),
-                               re.sub(r"[^a-zA-Z0-9+#]+", ' ', keyword).lower())
-            if ratio == 100:
-                logging.info(f'standardized {keyword} to {standard_word}')
-                keyword = standard_word
-    return keyword
+    r = requests.get(f"http://127.0.0.1:8812/standardize-word/{keyword}")
+    standard_word = r.text
+    logging.info(f"standardize word: {keyword} to {standard_word}")
+    return standard_word
 
 
 def clean_punctuations(keywords_list: list) -> list:
@@ -38,6 +31,6 @@ if __name__ == '__main__':
     # word_list = ['react', 'react.js', 'Node', 'React.js']
     # standardize_keywords(word_list)
     # print(word_list)
-    word = 'react'
+    word = 'Node'
     s_word = get_standard_word(word)
     print(s_word)
