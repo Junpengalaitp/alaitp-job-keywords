@@ -1,5 +1,6 @@
 import logging
 import re
+import json
 
 import requests
 
@@ -8,12 +9,10 @@ from static.constants import standard_words_map
 standard_word_list = list(standard_words_map.keys())
 
 
-def standardize_keywords(keyword_dict: dict):
-    for key, keyword_list in keyword_dict.items():
-        for index, keyword in enumerate(keyword_list):
-            if keyword not in standard_word_list:
-                standard_word = get_standard_word(keyword)
-                keyword_list[index] = standard_word
+def get_standardized_keywords(keyword_dict: dict) -> dict:
+    r = requests.post(f"http://127.0.0.1:8812/standardize-word", data=json.dumps(keyword_dict))
+    standard_word_dict = r.text
+    return json.loads(standard_word_dict)
 
 
 def get_standard_word(keyword: str) -> str:

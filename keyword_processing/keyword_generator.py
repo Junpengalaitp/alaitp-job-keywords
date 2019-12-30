@@ -6,7 +6,7 @@ from typing import List, Dict
 
 from keyword_processing.spacy_processing import generate_key_words_from_job_desc
 from logger.logger import setup_logging
-from post_processing.keyword_clean import standardize_keywords
+from post_processing.keyword_clean import get_standardized_keywords
 from service.mongo_service import get_all_jobs
 
 setup_logging()
@@ -24,7 +24,7 @@ def process_job_description(job_description_list: List[dict]) -> dict:
 
     keywords_dict = combine_result_to_dict(keywords_list)
 
-    standardize_keywords(keywords_dict)
+    get_standardized_keywords(keywords_dict)
 
     sort_keywords_dict(keywords_dict)
 
@@ -53,9 +53,10 @@ def process_jobs(source: str = 'all') -> dict:
 
     keywords_dict = combine_result_to_dict(keywords_list)
     logger.info(f'keywords_dict: {keywords_dict}')
-
-    standardize_keywords(keywords_dict)
-
+    start = time.perf_counter()
+    get_standardized_keywords(keywords_dict)
+    end = time.perf_counter()
+    logger.info(f'standardization finished in {round(end - start, 4)} seconds')
     sort_keywords_dict(keywords_dict)
     # end = time.perf_counter()
     # logger.info(f'Jobs keyword_processing generation finished in {round(end - start, 4)} seconds,')
