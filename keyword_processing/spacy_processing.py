@@ -16,7 +16,7 @@ def generate_key_words_from_job_desc(job_desc_text: str) -> dict:
 
     for ent in doc.ents:
         keyword_index = str(ent.start_char) + ',' + str(ent.end_char)
-        if len(ent.text) > 1 or ent.text in ('c', 'C'):
+        if len(ent.text) > 1 or ent.text in ('c', 'C', 'R', 'r'):
             keywords_dict[ent.label_][keyword_index] = ent.text
 
     return keywords_dict
