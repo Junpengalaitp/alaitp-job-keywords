@@ -7,3 +7,4 @@ venv
 /.idea/modules.xml
 /.idea/vcs.xml
 /.idea/
+/job_model/
