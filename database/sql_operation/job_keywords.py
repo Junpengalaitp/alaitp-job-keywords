@@ -1,14 +1,15 @@
 import pandas as pd
 
-from database.sqlalchemy_manager import conn, logger
+from database.sqlalchemy_manager import conn
+from logger.logger import log
 
 
 def select_all_standard_words() -> pd.DataFrame:
     query = f"""
-                SELECT * FROM standard_words
+                SELECT * FROM standard_word
              """
     df = pd.read_sql_query(query, conn)
-    logger.info(f"select all standard words success: length: {len(df)}")
+    log.info(f"select all standard words success: length: {len(df)}")
     return df
 
 

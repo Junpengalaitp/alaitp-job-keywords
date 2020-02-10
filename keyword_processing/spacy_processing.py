@@ -4,7 +4,7 @@ import spacy
 
 from pre_processing.text_clean import get_cleaned_text
 
-nlp = spacy.load('job_model')
+nlp = spacy.load('job_model_sm')
 
 
 def generate_key_words_from_job_desc(job_desc_text: str) -> dict:

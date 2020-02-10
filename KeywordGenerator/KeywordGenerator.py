@@ -1,14 +1,10 @@
-import logging
 import time
 from typing import List
 
-from keyword_processing.keyword_generator import combine_result_to_dict, sort_keywords_dict
+from keyword_processing.keyword_generator import sort_keywords_dict
 from keyword_processing.spacy_processing import generate_key_words_from_job_desc
-from logger.logger import setup_logging
+from logger.logger import log
 from post_processing.keyword_clean import get_standardized_keywords
-
-setup_logging()
-logger = logging.getLogger("fileLogger")
 
 
 def get_job_keyword_dict(job_description_list: List[dict]) -> dict:
@@ -28,8 +24,8 @@ def get_job_keyword_dict(job_description_list: List[dict]) -> dict:
     keyword_dict['keywordByLabel'] = get_standardized_keywords(keyword_dict['keywordByLabel'])
 
     sort_keywords_dict(keyword_dict['keywordByLabel'])
-    logger.info(keyword_dict)
+    log.info(keyword_dict)
     end = time.perf_counter()
-    logger.info(f'Jobs keyword_processing generation finished in {round(end - start, 4)} seconds,')
+    log.info(f'Jobs keyword_processing generation finished in {round(end - start, 4)} seconds,')
     return keyword_dict  # convert to json to keep the order during transaction
 

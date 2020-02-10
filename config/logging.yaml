@@ -28,7 +28,7 @@ handlers:
 
         formatter: simple
 
-        filename: /logs/application-info.log
+        filename: /Users/hejunpeng/alaitp/alaitp-job-keywords/logs/application-info.log
 
         when: midnight
 
@@ -46,7 +46,7 @@ handlers:
 
         formatter: simple
 
-        filename: /logs/application-info.log
+        filename: /Users/hejunpeng/alaitp/alaitp-job-keywords/logs/application-info.log
 
         maxBytes: 104857600  # 100MB
 
@@ -62,7 +62,7 @@ handlers:
 
         formatter: simple
 
-        filename: /logs/application-error.log
+        filename: /Users/hejunpeng/alaitp/alaitp-job-keywords/logs/application-error.log
 
         backupCount: 20
 
