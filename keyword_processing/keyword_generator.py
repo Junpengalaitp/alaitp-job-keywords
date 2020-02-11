@@ -1,4 +1,3 @@
-import logging
 import time
 from collections import Counter
 from typing import List, Dict
@@ -6,7 +5,6 @@ from typing import List, Dict
 from keyword_processing.spacy_processing import generate_key_words_from_job_desc
 from logger.logger import log
 from post_processing.keyword_clean import get_standardized_keywords
-from service.mongo_service import get_all_jobs
 
 
 def process_job_description(job_description_list: List[dict]) -> dict:
@@ -27,41 +25,6 @@ def process_job_description(job_description_list: List[dict]) -> dict:
     end = time.perf_counter()
     log.info(f'Jobs keyword_processing generation finished in {round(end - start, 4)} seconds,')
     return keywords_dict  # convert to json to keep the order during transaction
-
-
-def process_jobs(source: str = 'all') -> dict:
-    start = time.perf_counter()
-    job_texts = get_all_jobs(source)
-    end = time.perf_counter()
-    logging.info(f'Retrieved {len(job_texts)} jobs from mongo: {source} in {round(end - start, 4)} seconds')
-
-    # start = time.perf_counter()
-    # Multiprocessing for signal job keyword_processing
-    # keywords_list = Manager().list()
-    # jobs = [Process(target=get_job_keywords_list, args=(keywords_list, text)) for text in job_texts]
-    # for job in jobs:
-    #     job.start()
-    # for job in jobs:
-    #     job.join()
-    keywords_list = []
-    for text in job_texts:
-        keywords_list.append(generate_key_words_from_job_desc(text))
-
-    keywords_dict = combine_result_to_dict(keywords_list)
-    log.info(f'keywords_dict: {keywords_dict}')
-    start = time.perf_counter()
-    get_standardized_keywords(keywords_dict)
-    end = time.perf_counter()
-    log.info(f'standardization finished in {round(end - start, 4)} seconds')
-    sort_keywords_dict(keywords_dict)
-    # end = time.perf_counter()
-    # log.info(f'Jobs keyword_processing generation finished in {round(end - start, 4)} seconds,')
-    return keywords_dict  # convert to json to keep the order during transaction
-
-
-# def get_job_keywords_list(keywords_list, job_text):
-#     keyword_processing = generate_key_words_from_job_desc(job_text)
-#     keywords_list.append(keyword_processing)
 
 
 def combine_result_to_dict(keywords_list: List[dict]) -> Dict[str, list]:

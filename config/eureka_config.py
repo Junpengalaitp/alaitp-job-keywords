@@ -1,7 +1,9 @@
-import py_eureka_client.eureka_client as eureka_client
+from py_eureka_client import eureka_client
 
-your_rest_server_port = 5000
-# The flowing code will register your server to eureka server and also start to send heartbeat every 30 seconds
-eureka_client.init(eureka_server="http://localhost:8811",
-                   app_name="job-keywords",
-                   instance_port=your_rest_server_port)
+
+def connect_eureka(ip, port):
+    eureka_client.init(eureka_server="http://localhost:8811/eureka",
+                       app_name="job-keywords",
+                       instance_host=ip,
+                       instance_port=port,
+                       ha_strategy=eureka_client.HA_STRATEGY_OTHER)
