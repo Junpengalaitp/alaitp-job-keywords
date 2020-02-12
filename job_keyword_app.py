@@ -7,10 +7,9 @@ from flask_cors import CORS
 from flask_restful import Api
 from waitress import serve
 
-
 from KeywordGenerator.KeywordGenerator import get_job_keyword_dict
+from config.config_server import CONFIG
 from config.eureka_config import connect_eureka
-from config.read_config import get_config
 
 app = Flask(__name__)
 CORS(app)
@@ -27,7 +26,7 @@ def get_job_keywords():
 
 
 def start_app():
-    SERVER_IP = get_config('WEB_SERVER', 'ip')
+    SERVER_IP = CONFIG['web.server.ip']
     PORT = randint(27018, 65535)
     connect_eureka(SERVER_IP, PORT)
     serve(app, host=SERVER_IP, port=PORT)

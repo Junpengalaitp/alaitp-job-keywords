@@ -1,13 +1,11 @@
 from sqlalchemy import create_engine
 
-from config.read_config import get_config
+from config.config_server import CONFIG
 
-SERVER_IP = get_config('SQL_SERVER', 'ip')
-PORT = get_config('SQL_SERVER', 'port')
-DB_NAME = get_config('SQL_SERVER', 'dbname')
-username = get_config('SQL_SERVER', 'user')
-password = get_config('SQL_SERVER', 'password')
+SERVER_URL = CONFIG['spring.datasource.url'].split('//')[1]
+username = CONFIG['spring.datasource.username']
+password = CONFIG['spring.datasource.password']
 
-conn = create_engine(f'postgresql://{username}:{password}@{SERVER_IP}:{PORT}/{DB_NAME}', pool_recycle=3600)
+conn = create_engine(f'postgresql://{username}:{password}@{SERVER_URL}', pool_recycle=3600)
 
 
