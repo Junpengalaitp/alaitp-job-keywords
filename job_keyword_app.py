@@ -3,7 +3,6 @@ import logging
 from random import randint
 
 from flask import Flask, request
-from flask_cors import CORS
 from flask_restful import Api
 from waitress import serve
 
@@ -12,7 +11,6 @@ from config.config_server import CONFIG
 from config.eureka_config import connect_eureka
 
 app = Flask(__name__)
-CORS(app)
 api = Api(app)
 
 

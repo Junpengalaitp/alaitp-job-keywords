@@ -5,20 +5,24 @@ from keyword_processing.keyword_generator import sort_keywords_dict
 from keyword_processing.spacy_processing import generate_key_words_from_job_desc
 from logger.logger import log
 from post_processing.keyword_clean import get_standardized_keywords
+from service.cache_service import store_keyword_cache, get_keyword_cache
 
 
 def get_job_keyword_dict(job_description_list: List[dict]) -> dict:
     start = time.perf_counter()
     keyword_dict = {'keywordByJob': {}, 'keywordByLabel': {}}
     for job_description in job_description_list:
-        job_keywords = generate_key_words_from_job_desc(job_description['jobDescriptionText'])
-        job_description['keyword'] = job_keywords
-        keyword_dict['keywordByJob'][job_description['jobId']] = job_keywords
-        for label in job_keywords:
+        job_keyword_dict = get_keyword_cache(job_description['jobId'])
+        if not job_keyword_dict:
+            job_keyword_dict = generate_key_words_from_job_desc(job_description['jobDescriptionText'])
+        job_description['keyword'] = job_keyword_dict
+        store_keyword_cache(job_description['jobId'], job_keyword_dict)
+        keyword_dict['keywordByJob'][job_description['jobId']] = job_keyword_dict
+        for label in job_keyword_dict:
             if label not in keyword_dict['keywordByLabel']:
-                keyword_dict['keywordByLabel'][label] = list(job_keywords[label].values())
+                keyword_dict['keywordByLabel'][label] = list(job_keyword_dict[label].values())
             else:
-                for keyword in job_keywords[label].values():
+                for keyword in job_keyword_dict[label].values():
                     keyword_dict['keywordByLabel'][label].append(keyword)
 
     keyword_dict['keywordByLabel'] = get_standardized_keywords(keyword_dict['keywordByLabel'])
