@@ -1,3 +1,4 @@
+from dto.job_keyword_dto import JobKeywordDTO
 from service.cache_service import get_keyword_cache, store_keyword_cache
 from service.spacy_service import generate_key_words_from_job_desc
 from util.timer import timeit
