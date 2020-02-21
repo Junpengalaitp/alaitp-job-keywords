@@ -1,7 +1,7 @@
 import json
 
 from config.redis_config import redis_template
-from dto.JobKeywordDTO import JobKeywordDTO
+from dto.job_keyword_dto import JobKeywordDTO
 from logger.logger import log
 
 enable_cache = True

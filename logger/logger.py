@@ -1,7 +1,7 @@
-import logging.config
 import os
 import platform
 
+import logging.config
 import yaml
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

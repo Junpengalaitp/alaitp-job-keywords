@@ -1,11 +1,5 @@
-import time
-from typing import List, Dict
-
-from keyword_processing.keyword_generator import sort_keywords_dict
-from keyword_processing.spacy_processing import generate_key_words_from_job_desc
-from logger.logger import log
-from post_processing.keyword_clean import get_standardized_keywords
-from service.cache_service import store_keyword_cache, get_keyword_cache
+from service.cache_service import get_keyword_cache, store_keyword_cache
+from service.spacy_service import generate_key_words_from_job_desc
 from util.timer import timeit
 
 
@@ -35,4 +29,3 @@ def get_job_keyword_dict(job_description_list: dict) -> dict:
     # sort_keywords_dict(keyword_dict['keywordByLabel'])
     # log.info(keyword_dict)
     return keyword_dict  # convert to json to keep the order during transaction
-

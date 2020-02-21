@@ -7,5 +7,5 @@ venv
 /.idea/modules.xml
 /.idea/vcs.xml
 /.idea/
-/job_model/
+/spacy_model/job_model/
 /logs/

@@ -1,9 +1,8 @@
-from json import JSONEncoder
+import json
 
 
-class JsonEncoder(JSONEncoder):
-    def default(self, o):
-        return o.__dict__
+def to_json(obj: object) -> str:
+    return json.dumps(obj.__dict__)
 
 
 class JSONObject:

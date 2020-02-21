@@ -1,6 +1,4 @@
-import json
-
-from dto.KeywordDTO import KeywordDTO
+from dto.keyword_dto import KeywordDTO
 
 
 class JobKeywordDTO:
@@ -12,9 +10,6 @@ class JobKeywordDTO:
 
     def add_keyword(self, keyword_dto: KeywordDTO):
         self.keyword_list.append(keyword_dto)
-
-    def to_json(self):
-        return json.dumps(self.__dict__)
 
     def get_keyword_list(self):
         return self.keyword_list

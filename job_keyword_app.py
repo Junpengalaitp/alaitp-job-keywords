@@ -1,11 +1,10 @@
 import json
-import logging
 from random import randint
 
 from flask import Flask, request, jsonify
 from waitress import serve
 
-from KeywordGenerator.KeywordGenerator import get_job_keyword_dict
+from service.job_keyword_service import get_job_keyword_dict
 from config.config_server import CONFIG
 from config.eureka_config import connect_eureka
 from logger.logger import log
