@@ -1,8 +1,5 @@
-import json
-
-from config.redis_config import redis_template
+from config.redis_config import redis_template, redis_template_db3
 from dto.job_keyword_dto import JobKeywordDTO
-from logger.logger import log
 from util.json_util import to_obj, to_json
 
 enable_cache = True
@@ -15,7 +12,6 @@ def store_keyword_cache(job_keyword_dto: JobKeywordDTO):
     if keyword_cache_exist(job_id):
         return
     redis_template.set(job_id, to_json(job_keyword_dto))
-    log.info(f"stored the keyword_dict of job_id: {job_keyword_dto.job_id} in redis")
 
 
 def get_keyword_cache(job_id: str):
@@ -23,7 +19,6 @@ def get_keyword_cache(job_id: str):
         return
     cache = redis_template.get(job_id)
     if cache:
-        log.info(f"found the keyword_dict of job_id: {job_id} in redis")
         return to_obj(JobKeywordDTO(), cache)
     else:
         return None
@@ -34,3 +29,24 @@ def keyword_cache_exist(job_id: str):
     if cache:
         return True
     return False
+
+
+def store_standard_word_cache(other_word: str, standard_word: str):
+    if not enable_cache:
+        return
+    redis_template_db3.set(other_word, standard_word)
+
+
+def get_standard_word_cache(other_word: str) -> str:
+    if not enable_cache:
+        return
+    cache = redis_template_db3.get(other_word)
+    if cache:
+        return cache.decode("utf-8")
+    else:
+        return other_word
+
+
+if __name__ == '__main__':
+    cached = get_standard_word_cache('PYTHON')
+    print(cached, type(cached))

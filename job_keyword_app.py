@@ -4,10 +4,9 @@ from random import randint
 from flask import Flask, request, jsonify
 from waitress import serve
 
-from service.job_keyword_service import get_job_keyword_dict
 from config.config_server import CONFIG
 from config.eureka_config import connect_eureka
-from logger.logger import log
+from service.job_keyword_service import get_job_keyword_dict
 
 app = Flask(__name__)
 
@@ -15,9 +14,7 @@ app = Flask(__name__)
 @app.route('/keywords', methods=['POST'])
 def get_job_keywords():
     job_description_data = json.loads(request.data)
-    log.info(f"job_description_data: {request.data}")
     job_keyword_dict = get_job_keyword_dict(job_description_data)
-    log.info(f"job keyword_processing dict generated: {job_keyword_dict}")
     return jsonify(job_keyword_dict)
 
 

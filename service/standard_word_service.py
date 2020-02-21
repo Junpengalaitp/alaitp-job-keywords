@@ -1,12 +1,10 @@
 import json
-import re
 
 import logging
-
+import re
 import requests
 
 from database.sql_operation.job_keywords import select_all_standard_words
-from static.constants import standard_words_map
 
 
 def get_standard_word_map() -> dict:
@@ -18,11 +16,7 @@ def get_standard_word_map() -> dict:
     return standard_word_map
 
 
-if __name__ == '__main__':
-    # standard_word_map = get_standard_word_map()
-    # print(standard_word_map)
-    pass
-standard_word_list = list(standard_words_map.keys())
+standard_word_list = list(get_standard_word_map().keys())
 
 
 def get_standardized_keywords(keyword_dict: dict) -> dict:
