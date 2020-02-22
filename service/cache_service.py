@@ -8,8 +8,6 @@ enable_cache = True
 
 
 def get_job_search_cache(job_search_id: str):
-    if not enable_cache:
-        return
     cache = redis_template.db(1).hgetall(job_search_id)
     if cache:
         return {k.decode('utf-8'): json.loads(v) for k, v in cache.items()}
