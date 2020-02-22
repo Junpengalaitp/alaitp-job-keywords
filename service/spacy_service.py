@@ -14,7 +14,7 @@ model_path = os.path.join(BASE_DIR, 'spacy_model', 'job_model_sm')
 nlp = spacy.load(model_path)
 
 
-def generate_key_words_from_job_desc(job_id: str, job_desc_text: str, keyword_category_order: dict) -> dict:
+def generate_key_words_from_job_desc(job_id: str, job_desc_text: str, keyword_category_order: dict) -> JobKeywordDTO:
     doc = nlp(job_desc_text)
 
     job_keyword_dto = JobKeywordDTO(job_id)

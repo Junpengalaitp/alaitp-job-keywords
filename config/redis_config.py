@@ -1,16 +1,36 @@
 import redis
+from redis import Redis
 
 from config.config_server import CONFIG
 
 HOST = CONFIG['spring.redis.host']
 PORT = CONFIG['spring.redis.port']
+DB1 = CONFIG['spring.redis.job.api']
 DB2 = CONFIG['spring.redis.database']
 DB3 = CONFIG['spring.redis.standard.word']
 
-pool_job_keyword = redis.ConnectionPool(host=HOST, port=PORT, db=DB2)
 
-redis_template = redis.Redis(connection_pool=pool_job_keyword)
+class RedisTemplate:
+    # Apply singleton
+    _instance = None
 
-pool_standard_word = redis.ConnectionPool(host=HOST, port=PORT, db=DB3)
+    def __new__(cls, *args, **kwargs):
+        if not cls._instance:
+            cls._instance = object.__new__(cls)
+        return cls._instance
 
-redis_template_db3 = redis.Redis(connection_pool=pool_standard_word)
+    def __init__(self):
+        self.job_search_pool = redis.ConnectionPool(host=HOST, port=PORT, db=DB1)
+        self.job_keyword_pool = redis.ConnectionPool(host=HOST, port=PORT, db=DB2)
+        self.standard_word_pool = redis.ConnectionPool(host=HOST, port=PORT, db=DB3)
+
+    def db(self, db: int) -> Redis:
+        if db == 1:
+            return Redis(connection_pool=self.job_search_pool)
+        if db == 2:
+            return Redis(connection_pool=self.job_keyword_pool)
+        if db == 3:
+            return Redis(connection_pool=self.standard_word_pool)
+
+
+redis_template = RedisTemplate()
