@@ -38,8 +38,6 @@ def store_standard_word_cache(other_word: str, standard_word: str):
 
 
 def get_standard_word_cache(other_word: str) -> str:
-    if not enable_cache:
-        return
     cache = redis_template_db3.get(other_word)
     if cache:
         return cache.decode("utf-8")

@@ -1,20 +1,28 @@
+from collections import defaultdict
+
+from logger.logger import log
 from service.cache_service import get_keyword_cache, store_keyword_cache
-from service.spacy_service import generate_key_words_from_job_desc
+from service.spacy_service import generate_key_words_from_job_desc, sort_keywords_by_category, add_keyword_by_category
 from util.timer import timeit
 
 
 @timeit
 def get_job_keyword_dict(job_description_list: dict) -> dict:
     keyword_dict = {}
+    keyword_category_order = defaultdict(list)
     for job_id, job_description in job_description_list.items():
         job_keyword_dto = get_keyword_cache(job_id)
+        if job_keyword_dto:
+            for keyword_dto in job_keyword_dto.keyword_list:
+                add_keyword_by_category(keyword_dto["category"], keyword_dto["keyword"], keyword_category_order)
         if not job_keyword_dto:
-            job_keyword_dto = generate_key_words_from_job_desc(job_id, job_description['jobDescriptionText'])
+            job_keyword_dto = generate_key_words_from_job_desc(job_id, job_description['jobDescriptionText'], keyword_category_order)
         keyword_dict[job_id] = job_keyword_dto.get_keyword_list()
         store_keyword_cache(job_keyword_dto)
 
-    return keyword_dict  # convert to json to keep the order during transaction
+    keyword_category_order = sort_keywords_by_category(keyword_category_order)
 
+    log.debug(f"keyword_category_order: {keyword_category_order}")
 
-def get_standard_word(word: str) -> str:
-    return
+    return {"keywordIndexByJob": keyword_dict, "orderedKeywordByCategory": keyword_category_order}
+
