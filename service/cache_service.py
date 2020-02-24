@@ -52,6 +52,16 @@ def get_standard_word_cache(other_word: str) -> str:
         return other_word
 
 
+def get_cached_keyword_dtos(job_id_list):
+    cached_keyword_dto_list, cached_keyword_dto_ids = [], []
+    for job_id in job_id_list:
+        job_keyword_dto = get_keyword_cache(job_id)
+        if job_keyword_dto:
+            cached_keyword_dto_list.append(job_keyword_dto)
+            cached_keyword_dto_ids.append(job_keyword_dto.job_id)
+    return cached_keyword_dto_list, cached_keyword_dto_ids
+
+
 def get_keyword_cache_keys():
     cache = redis_template.db(2).keys()
     return [c.decode('utf-8') for c in cache] if cache else None

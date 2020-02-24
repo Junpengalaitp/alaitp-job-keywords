@@ -2,18 +2,27 @@ import os
 from multiprocessing import Process, Manager
 
 from logger.logger import log
-from service.cache_service import get_keyword_cache
+from service.cache_service import get_cached_keyword_dtos
 from service.spacy_service import spacy_job_keywords, sort_keywords_by_category, get_keyword_by_category
 from util.timer import timeit
 
-
 @timeit
 def get_job_keyword_dict(job_description_dict: dict) -> dict:
-    keyword_dto_list = Manager().list()  # list data structure for multiprocessing
-    process_list = [Process(target=process_one_job, args=(job_id, job_description['jobDescriptionText'], keyword_dto_list))
-                    for job_id, job_description in job_description_dict.items()]
+    # get all cached keyword_dto
+    cached_keyword_dto_list, cached_keyword_dto_ids = get_cached_keyword_dtos(job_description_dict.keys())
+    log.debug(f"got {len(cached_keyword_dto_ids)} job_keyword_dto from cache")
 
-    multiprocessing_in_chunks(process_list)
+    uncached_num = len(job_description_dict) - len(cached_keyword_dto_list)
+    # multiprocessing for cpu intensive spacy algorithm
+    if uncached_num:
+        log.debug(f"job_keyword_dto of {uncached_num} jobs were not cached, send them to spacy")
+        multiprocessing_keyword_dto_list = Manager().list()  # list data structure for multiprocessing
+        process_list = [Process(target=spacy_job_keywords, args=(job_id, job_description['jobDescriptionText'], multiprocessing_keyword_dto_list))
+                        for job_id, job_description in job_description_dict.items() if job_id not in cached_keyword_dto_ids]
+        multiprocessing_in_chunks(process_list)
+        keyword_dto_list = cached_keyword_dto_list + list(multiprocessing_keyword_dto_list)
+    else:
+        keyword_dto_list = cached_keyword_dto_list
 
     keyword_idx_by_job = {job_keyword_dto.job_id: job_keyword_dto.get_keyword_list() for job_keyword_dto in keyword_dto_list}
     log.debug(f"keyword_idx_by_job complete: length: {len(keyword_idx_by_job)}")
@@ -24,14 +33,6 @@ def get_job_keyword_dict(job_description_dict: dict) -> dict:
     # log.debug(f"keyword_category_order: {keyword_category_order}")
 
     return {"keywordIndexByJob": keyword_idx_by_job, "orderedKeywordByCategory": keyword_category_order}
-
-
-def process_one_job(job_id, job_description_text, keyword_dto_list):
-    job_keyword_dto = get_keyword_cache(job_id)
-    if job_keyword_dto:
-        keyword_dto_list.append(job_keyword_dto)
-    else:
-        spacy_job_keywords(job_id, job_description_text, keyword_dto_list)
 
 
 def multiprocessing_in_chunks(process_list: list):
