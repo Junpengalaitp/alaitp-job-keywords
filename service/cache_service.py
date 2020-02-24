@@ -39,7 +39,6 @@ def keyword_cache_exist(job_id: str):
 
 
 def store_standard_word_cache(other_word: str, standard_word: str):
-    redis_template.db(3).flushall()
     redis_template.db(3).set(other_word, standard_word)
 
 
