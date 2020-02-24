@@ -1,6 +1,5 @@
 import os
 from collections import OrderedDict, Counter, defaultdict
-from multiprocessing import Manager
 
 import spacy
 

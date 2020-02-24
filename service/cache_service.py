@@ -54,6 +54,8 @@ def get_standard_word_cache(other_word: str) -> str:
 
 def get_cached_keyword_dtos(job_id_list):
     cached_keyword_dto_list, cached_keyword_dto_ids = [], []
+    if not enable_cache:
+        return cached_keyword_dto_list, cached_keyword_dto_ids
     for job_id in job_id_list:
         job_keyword_dto = get_keyword_cache(job_id)
         if job_keyword_dto:
