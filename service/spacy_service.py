@@ -4,6 +4,7 @@ from collections import OrderedDict, Counter, defaultdict
 import spacy
 
 from dto.job_keyword_dto import JobKeywordDTO
+from logger.logger import log
 from service.cache_service import get_standard_word_cache, store_keyword_cache
 from util.timer import timeit
 
@@ -17,8 +18,14 @@ def spacy_job_keywords(job_id: str, job_desc_text: str, keyword_dto_list):
     doc = nlp(job_desc_text)
     job_keyword_dto = JobKeywordDTO(job_id)
     for ent in doc.ents:
-        if len(ent.text) > 1 or ent.text in ('c', 'C', 'R', 'r'):
-            standard_word = get_standard_word_cache(ent.text)
+        keyword = ent.text
+        if len(keyword) > 1 or keyword in ('c', 'C', 'R', 'r'):
+            # filter out keyword with punctuation in both ends except '.Net', 'C++', 'C#'
+            if (not keyword[-1].isalnum() and (keyword[-1] not in ('+', '#'))) or (
+                    not keyword[0].isalnum() and keyword[:2].upper() != '.N'):
+                log.debug(f"keyword with punctuation in end filtered: {keyword}")
+                continue
+            standard_word = get_standard_word_cache(keyword)
             keyword_dict = {"keyword": standard_word,
                             "category": ent.label_,
                             "startIdx": ent.start_char,
