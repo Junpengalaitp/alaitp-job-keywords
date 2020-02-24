@@ -22,7 +22,7 @@ def get_job_keywords(job_search_id: str):
         log.error(f"get job_search_id: {job_search_id} from cache failed")
         return jsonify({"error": True, "jobSearchId": job_search_id})
 
-    log.debug(f"get job_search_id: {job_search_id} job_description_data from cache")
+    log.debug(f"get job_search_id: {job_search_id} job_description_data from cache, length: {len(job_description_data)}")
     job_keyword_dict = get_job_keyword_dict(job_description_data)
     redis_template.db(1).delete(job_search_id)
     log.debug(f"deleted job_search_id: {job_search_id} from cache")

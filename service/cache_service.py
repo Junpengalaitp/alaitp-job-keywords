@@ -28,10 +28,7 @@ def get_keyword_cache(job_id: str):
     if not enable_cache:
         return
     cache = redis_template.db(2).get(job_id)
-    if cache:
-        return to_obj(JobKeywordDTO(), cache)
-    else:
-        return None
+    return to_obj(JobKeywordDTO(), cache) if cache else None
 
 
 def keyword_cache_exist(job_id: str):
@@ -55,6 +52,12 @@ def get_standard_word_cache(other_word: str) -> str:
         return other_word
 
 
+def get_keyword_cache_keys():
+    cache = redis_template.db(2).keys()
+    return [c.decode('utf-8') for c in cache] if cache else None
+
+
 if __name__ == '__main__':
-    cached = get_job_search_cache('0175fd1e-57ea-42c1-a7d3-25d5160bc79a')
-    print(type(cached['33ddd82e869037306554e258791b6e1efb1d51bf76ac025439be691daa2971bf']))
+    cached = get_keyword_cache_keys()
+    print(len(cached))
+    print(cached)

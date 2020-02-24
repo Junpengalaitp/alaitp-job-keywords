@@ -18,7 +18,7 @@ def start_test_server():
     SERVER_IP = CONFIG['web.server.ip']
     PORT = 5000
     connect_eureka(SERVER_IP, PORT)
-    app.run(host="localhost", port=PORT)
+    serve(app, host="localhost", port=PORT)
 
 
 if __name__ == '__main__':

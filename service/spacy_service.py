@@ -1,10 +1,10 @@
 import os
-from collections import OrderedDict, Counter
+from collections import OrderedDict, Counter, defaultdict
+from multiprocessing import Manager
 
 import spacy
 
 from dto.job_keyword_dto import JobKeywordDTO
-from logger.logger import log
 from service.cache_service import get_standard_word_cache, store_keyword_cache
 from util.timer import timeit
 
@@ -14,31 +14,36 @@ model_path = os.path.join(BASE_DIR, 'spacy_model', 'job_model_sm')
 nlp = spacy.load(model_path)
 
 
-def spacy_job_keywords(job_id: str, job_desc_text: str, keyword_idx_by_job: dict, keyword_category_order: dict):
+def spacy_job_keywords(job_id: str, job_desc_text: str, keyword_dto_list):
     doc = nlp(job_desc_text)
-
     job_keyword_dto = JobKeywordDTO(job_id)
-
     for ent in doc.ents:
         if len(ent.text) > 1 or ent.text in ('c', 'C', 'R', 'r'):
             standard_word = get_standard_word_cache(ent.text)
-            keyword_dict = {"keyword": standard_word, "category": ent.label_, "startIdx": ent.start_char,
+            keyword_dict = {"keyword": standard_word,
+                            "category": ent.label_,
+                            "startIdx": ent.start_char,
                             "endIdx": ent.end_char}
             job_keyword_dto.add_keyword(keyword_dict)
-            keyword_idx_by_job[job_id] = job_keyword_dto.get_keyword_list()
-            add_keyword_by_category(ent.label_, standard_word, keyword_category_order)
-            store_keyword_cache(job_keyword_dto)
+
+    keyword_dto_list.append(job_keyword_dto)
+    store_keyword_cache(job_keyword_dto)
 
 
-def add_keyword_by_category(category: str, keyword: str, keyword_category_order: dict):
-    keyword_category_order[category].append(keyword)
+def get_keyword_by_category(job_keyword_dto_list):
+    keyword_category_order = defaultdict(list)
+    for job_keyword_dto in job_keyword_dto_list:
+        job_keyword_list = job_keyword_dto.get_keyword_list()
+        for keyword_dict in job_keyword_list:
+            keyword_category_order[keyword_dict["category"]].append(keyword_dict["keyword"])
+    return keyword_category_order
 
 
 @timeit
-def sort_keywords_by_category(keyword_category_order: dict) -> dict:
+def sort_keywords_by_category(keyword_category_order):
     for category, keyword_list in keyword_category_order.items():
         counts = Counter(keyword_list)
-        log.debug(f"category: {category} and its count: {counts}")
+        # log.debug(f"category: {category} and its count: {counts}")
         # sort the list by its count ASC
         sorted_list = sorted(keyword_list, key=lambda x: counts[x])
         # remove duplicates and reverse the order
