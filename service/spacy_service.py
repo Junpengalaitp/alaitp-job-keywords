@@ -23,7 +23,7 @@ def spacy_job_keywords(job_id: str, job_desc_text: str, keyword_dto_list):
             # filter out keyword with punctuation in both ends except '.Net', 'C++', 'C#'
             if (not keyword[-1].isalnum() and (keyword[-1] not in ('+', '#'))) or (
                     not keyword[0].isalnum() and keyword[:2].upper() != '.N'):
-                log.debug(f"keyword with punctuation in end filtered: {keyword}")
+                # log.debug(f"keyword with punctuation in end filtered: {keyword}")
                 continue
             standard_word = get_standard_word_cache(keyword)
             keyword_dict = {"keyword": standard_word,
