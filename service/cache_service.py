@@ -1,4 +1,5 @@
 import json
+from typing import Optional
 
 from config.redis_config import redis_template
 from dto.job_keyword_dto import JobKeywordDTO
@@ -48,6 +49,18 @@ def get_standard_word_cache(other_word: str) -> str:
         return cache.decode("utf-8")
     else:
         return other_word
+
+
+def store_standard_category_cache(standard_word: str, standard_category: str):
+    redis_template.db(4).set(standard_word, standard_category)
+
+
+def get_standard_category_cache(standard_word: str) -> Optional[str]:
+    cache = redis_template.db(4).get(standard_word)
+    if cache:
+        return cache.decode("utf-8")
+    else:
+        return
 
 
 def get_cached_keyword_dtos(job_id_list):

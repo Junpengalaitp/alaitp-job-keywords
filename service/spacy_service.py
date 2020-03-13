@@ -5,7 +5,7 @@ import spacy
 
 from dto.job_keyword_dto import JobKeywordDTO
 from logger.logger import log
-from service.cache_service import get_standard_word_cache, store_keyword_cache
+from service.cache_service import get_standard_word_cache, store_keyword_cache, get_standard_category_cache
 from util.timer import timeit
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -20,14 +20,16 @@ def spacy_job_keywords(job_id: str, job_desc_text: str, keyword_dto_list):
     for ent in doc.ents:
         keyword = ent.text
         if len(keyword) > 1 or keyword in ('c', 'C', 'R', 'r'):
-            # filter out keyword with punctuation in both ends except '.Net', 'C++', 'C#'
+            # filter out the keywords with punctuation in both ends except '.Net', 'C++', 'C#'
             if (not keyword[-1].isalnum() and (keyword[-1] not in ('+', '#'))) or (
                     not keyword[0].isalnum() and keyword[:2].upper() != '.N'):
-                # log.debug(f"keyword with punctuation in end filtered: {keyword}")
+                # log.debug(f"keyword with punctuation in the end filtered: {keyword}")
                 continue
             standard_word = get_standard_word_cache(keyword)
+            standard_category = get_standard_category_cache(standard_word)
+            category = ent.label_ if standard_category is None else standard_category
             keyword_dict = {"keyword": standard_word,
-                            "category": ent.label_,
+                            "category": category,
                             "startIdx": ent.start_char,
                             "endIdx": ent.end_char}
             job_keyword_dto.add_keyword(keyword_dict)
@@ -61,4 +63,3 @@ def sort_keywords_by_category(keyword_category_order):
         keyword_category_order[category] = list(unique_desc.keys())
 
     return keyword_category_order
-

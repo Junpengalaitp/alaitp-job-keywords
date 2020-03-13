@@ -8,6 +8,7 @@ PORT = CONFIG['spring.redis.port']
 DB1 = CONFIG['spring.redis.job.api']
 DB2 = CONFIG['spring.redis.database']
 DB3 = CONFIG['spring.redis.standard.word']
+DB4 = CONFIG['spring.redis.standard.category']
 
 
 class RedisTemplate:
@@ -23,6 +24,7 @@ class RedisTemplate:
         self.job_search_pool = redis.ConnectionPool(host=HOST, port=PORT, db=DB1)
         self.job_keyword_pool = redis.ConnectionPool(host=HOST, port=PORT, db=DB2)
         self.standard_word_pool = redis.ConnectionPool(host=HOST, port=PORT, db=DB3)
+        self.standard_category_pool = redis.ConnectionPool(host=HOST, port=PORT, db=DB4)
 
     def db(self, db: int) -> Redis:
         if db == 1:
@@ -31,6 +33,8 @@ class RedisTemplate:
             return Redis(connection_pool=self.job_keyword_pool)
         if db == 3:
             return Redis(connection_pool=self.standard_word_pool)
+        if db == 4:
+            return Redis(connection_pool=self.standard_category_pool)
 
 
 redis_template = RedisTemplate()
