@@ -3,7 +3,7 @@ from flask import request, jsonify
 from config.redis_config import redis_template
 from controller import app
 from logger.logger import log
-from service.cache_service import get_job_search_cache, get_standard_word_cache
+from service.cache_service import get_job_search_cache, get_standard_word_cache, get_standard_category_cache
 from service.job_keyword_service import get_job_keyword_dict
 
 
@@ -35,3 +35,10 @@ def get_job_keywords(job_search_id: str):
 def get_standard_word(word: str):
     standard_word = get_standard_word_cache(word)
     return standard_word
+
+
+@app.route("/standardize-category/<string:standard_word>", methods=['GET'])
+def get_standard_category(standard_word: str):
+    standard_category = get_standard_category_cache(standard_word)
+    return standard_category if standard_category else "None"
+
