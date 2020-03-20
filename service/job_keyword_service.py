@@ -3,7 +3,8 @@ from multiprocessing import Process, Manager
 
 from logger.logger import log
 from service.cache_service import get_cached_keyword_dtos
-from service.spacy_service import spacy_job_keywords, sort_keywords_by_category, get_keyword_by_category
+from service.spacy_service import spacy_job_keywords, sort_keywords_by_category, get_keyword_by_category, \
+    top_keywords_by_category
 from util.timer import timeit
 
 
@@ -31,7 +32,7 @@ def get_job_keyword_dict(job_description_dict: dict) -> dict:
     log.debug(f"keyword_idx_by_job complete: length: {len(keyword_idx_by_job)}")
     keyword_category_order = get_keyword_by_category(keyword_dto_list)
 
-    keyword_category_order = sort_keywords_by_category(keyword_category_order)
+    keyword_category_order = top_keywords_by_category(keyword_category_order)
 
     # log.debug(f"keyword_category_order: {keyword_category_order}")
 
