@@ -1,3 +1,4 @@
+import heapq
 import os
 from collections import OrderedDict, Counter, defaultdict
 
@@ -61,5 +62,17 @@ def sort_keywords_by_category(keyword_category_order):
             if unique_desc.get(word, 0) == 0:
                 unique_desc[word] = 1
         keyword_category_order[category] = list(unique_desc.keys())
+
+    return keyword_category_order
+
+
+@timeit
+def top_keywords_by_category(keyword_category_order):
+    for category, keyword_list in keyword_category_order.items():
+        counts = Counter(keyword_list)
+        # log.debug(f"category: {category} and its count: {counts}")
+        heap = [(-freq, word) for word, freq in counts.items()]
+        heapq.heapify(heap)
+        keyword_category_order[category] = [heapq.heappop(heap)[1] for _ in range(min(10, len(heap)))]
 
     return keyword_category_order
