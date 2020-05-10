@@ -3,7 +3,7 @@ from multiprocessing import Process, Manager
 
 from logger.logger import log
 from service.cache_service import get_cached_keyword_dtos
-from service.spacy_service import spacy_job_keywords, sort_keywords_by_category, get_keyword_by_category, \
+from service.spacy_service import spacy_job_keywords, get_keyword_by_category, \
     top_keywords_by_category
 from util.timer import timeit
 

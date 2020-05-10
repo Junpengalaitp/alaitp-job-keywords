@@ -1,4 +1,5 @@
 import json
+
 from typing import Optional
 
 from config.redis_config import redis_template

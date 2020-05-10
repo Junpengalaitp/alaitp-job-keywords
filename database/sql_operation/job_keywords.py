@@ -2,7 +2,7 @@ import pandas as pd
 
 from database.sqlalchemy_manager import conn
 from logger.logger import log
-from service.cache_service import store_standard_word_cache, store_standard_category_cache
+from service.cache_service import store_standard_category_cache
 
 
 def select_all_standard_words() -> pd.DataFrame:
