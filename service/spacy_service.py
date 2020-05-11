@@ -4,7 +4,7 @@ from collections import OrderedDict, Counter, defaultdict
 
 import spacy
 
-from dto.job_keyword_dto import JobKeywordDTO
+from entity.JobKeywordDto import JobKeywordDTO
 from service.cache_service import get_standard_word_cache, store_keyword_cache, get_standard_category_cache
 from util.timer import timeit
 

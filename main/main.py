@@ -2,7 +2,7 @@ from multiprocessing import Process
 
 import pika
 
-from config.rabbit_config import on_message
+from message.receiver import receive_job
 from job_keyword_app import start_test_server
 
 
@@ -13,7 +13,7 @@ def start_web():
 def start_messaging():
     connection = pika.BlockingConnection(pika.ConnectionParameters(host="localhost"))
     channel = connection.channel()
-    channel.basic_consume('job-topic', on_message)
+    channel.basic_consume('job-topic', receive_job)
 
     try:
         channel.start_consuming()
