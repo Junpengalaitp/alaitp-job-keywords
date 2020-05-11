@@ -38,6 +38,28 @@ def spacy_job_keywords(job_id: str, job_desc_text: str, keyword_dto_list):
     store_keyword_cache(job_keyword_dto)
 
 
+def spacy_job_keyword(job_id: str, job_desc_text: str):
+    doc = nlp(job_desc_text)
+    job_keyword_dto = JobKeywordDTO(job_id)
+    for ent in doc.ents:
+        keyword = ent.text
+        if len(keyword) > 1 or keyword in ('c', 'C', 'R', 'r'):
+            # filter out the keywords with punctuation in both ends except '.Net', 'C++', 'C#'
+            if (not keyword[-1].isalnum() and (keyword[-1] not in ('+', '#'))) or (
+                    not keyword[0].isalnum() and keyword[:2].upper() != '.N'):
+                # log.debug(f"keyword with punctuation in the end filtered: {keyword}")
+                continue
+            standard_word = get_standard_word_cache(keyword)
+            standard_category = get_standard_category_cache(standard_word)
+            category = ent.label_ if standard_category is None else standard_category
+            keyword_dict = {"keyword": standard_word,
+                            "category": category,
+                            "startIdx": ent.start_char,
+                            "endIdx": ent.end_char}
+            job_keyword_dto.add_keyword(keyword_dict)
+        return job_keyword_dto
+
+
 def get_keyword_by_category(job_keyword_dto_list):
     keyword_category_order = defaultdict(list)
     for job_keyword_dto in job_keyword_dto_list:

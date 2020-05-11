@@ -6,3 +6,4 @@ class BaseJobDto:
         self.companyName = company_name
         self.category = category
         self.description = description
+        self.description_text = None
