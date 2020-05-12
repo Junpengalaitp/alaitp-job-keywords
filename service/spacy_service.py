@@ -5,6 +5,7 @@ from collections import OrderedDict, Counter, defaultdict
 import spacy
 
 from entity.JobKeywordDto import JobKeywordDTO
+from logger.logger import log
 from service.cache_service import get_standard_word_cache, store_keyword_cache, get_standard_category_cache
 from util.timer import timeit
 
@@ -57,7 +58,8 @@ def spacy_job_keyword(job_id: str, job_desc_text: str):
                             "startIdx": ent.start_char,
                             "endIdx": ent.end_char}
             job_keyword_dto.add_keyword(keyword_dict)
-        return job_keyword_dto
+    log.info(job_keyword_dto)
+    return job_keyword_dto
 
 
 def get_keyword_by_category(job_keyword_dto_list):
