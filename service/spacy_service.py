@@ -6,7 +6,7 @@ import spacy
 
 from entity.JobKeywordDto import JobKeywordDTO
 from logger.logger import log
-from message.receiver import publish
+from message.publisher import publish
 from service.cache_service import get_standard_word_cache, store_keyword_cache, get_standard_category_cache
 from util.timer import timeit
 
