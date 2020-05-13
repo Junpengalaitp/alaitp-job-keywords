@@ -6,6 +6,7 @@ import spacy
 
 from entity.JobKeywordDto import JobKeywordDTO
 from logger.logger import log
+from message.receiver import publish
 from service.cache_service import get_standard_word_cache, store_keyword_cache, get_standard_category_cache
 from util.timer import timeit
 
@@ -59,6 +60,7 @@ def spacy_job_keyword(job_id: str, job_desc_text: str):
                             "endIdx": ent.end_char}
             job_keyword_dto.add_keyword(keyword_dict)
     log.info(job_keyword_dto)
+    publish(str(job_keyword_dto))
     return job_keyword_dto
 
 
