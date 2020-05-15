@@ -3,7 +3,7 @@ import json
 from typing import Optional
 
 from config.redis_config import redis_template
-from entity.JobKeywordDto import JobKeywordDTO
+from dto.JobKeywordDto import JobKeywordDTO
 from util.json_util import to_obj, to_json
 
 enable_cache = True

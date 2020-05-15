@@ -3,7 +3,6 @@ from util.str_util import auto_str
 
 @auto_str
 class JobKeywordDTO:
-
     def __init__(self, job_id: str = None, keyword_list=None):
         if not keyword_list:
             keyword_list = []
