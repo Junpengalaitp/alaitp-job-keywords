@@ -1,10 +1,11 @@
-import pika
-
+from config.config_server import CONFIG
+from config.rabbit_config import channel
 from logger.logger import log
 
-connection = pika.BlockingConnection(pika.ConnectionParameters(host="localhost"))
-channel = connection.channel()
+KEYWORD_EXCHANGE = CONFIG["keyword.exchange"]
+KEYWORD_KEY = CONFIG["keyword.key"]
+
 
 def publish(msg):
-    channel.basic_publish(exchange='', routing_key='keyword-topic', body=msg)
+    channel.basic_publish(exchange=KEYWORD_EXCHANGE, routing_key=KEYWORD_KEY, body=msg)
     log.info(f"published -----> {msg}")

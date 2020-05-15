@@ -1,8 +1,13 @@
 import pika
 
 from concurrency.ProcessPool import insert_msg
+from config.rabbit_config import channel
 from entity.RemotiveJob import RemotiveJob
 from util.json_util import to_obj
+
+from config.config_server import CONFIG
+
+JOB_QUEUE = CONFIG["job.queue"]
 
 
 def receive_job(channel, method_frame, header_frame, body):
@@ -13,11 +18,8 @@ def receive_job(channel, method_frame, header_frame, body):
 
 
 def start_messaging():
-    connection = pika.BlockingConnection(pika.ConnectionParameters(host="localhost"))
-    channel = connection.channel()
-    channel.basic_consume('job-topic', receive_job)
+    channel.basic_consume(JOB_QUEUE, receive_job)
     try:
         channel.start_consuming()
     except KeyboardInterrupt:
         channel.stop_consuming()
-    connection.close()

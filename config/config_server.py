@@ -1,8 +1,10 @@
 import requests
 
+config_server_url = "localhost:8810"
+
 
 def config_from_config_server():
-    r = requests.get("http://localhost:8810/job-keyword/default")
+    r = requests.get(f"http://{config_server_url}/job-keyword/default")
     res = r.json()
     config = {}
     for cfg in res['propertySources']:

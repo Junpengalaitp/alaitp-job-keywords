@@ -1,7 +1,7 @@
 from multiprocessing import Process
 
 from job_keyword_app import start_test_server
-from message.receiver import start_messaging
+from message.consumer import start_messaging
 
 
 def start_web():

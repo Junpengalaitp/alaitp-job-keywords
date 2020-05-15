@@ -59,7 +59,6 @@ def spacy_job_keyword(job_id: str, job_desc_text: str):
                             "startIdx": ent.start_char,
                             "endIdx": ent.end_char}
             job_keyword_dto.add_keyword(keyword_dict)
-    log.info(job_keyword_dto)
     publish(str(job_keyword_dto))
     return job_keyword_dto
 
