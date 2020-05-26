@@ -13,6 +13,13 @@ def to_obj(obj: object, json_str: str):
     return obj
 
 
+def jsonify(cls):
+    def jsonify(self):
+        return json.dumps(self.__dict__)
+    cls.to_json = jsonify
+    return cls
+
+
 camel_pat = re.compile(r'([A-Z])')
 under_pat = re.compile(r'_([a-z])')
 

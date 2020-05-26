@@ -9,11 +9,9 @@ def no_html_tags_text(html_str: str):
     return job_desc
 
 
-def auto_str(cls):
+def to_str(cls):
     def __str__(self):
-        return '%s(%s)' % (
-            type(self).__name__,
-            ', '.join('%s=%s' % item for item in vars(self).items())
-        )
+        return f"{type(self).__name__}({', '.join(f'{item[0]}={item[1]}' for item in self.__dict__.items())})"
     cls.__str__ = __str__
+    cls.__repr__ = __str__
     return cls

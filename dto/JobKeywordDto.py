@@ -1,7 +1,7 @@
-from util.str_util import auto_str
+from util.str_util import to_str
 
 
-@auto_str
+@to_str
 class JobKeywordDTO:
     def __init__(self, job_id: str = None, keyword_list=None):
         if not keyword_list:

@@ -1,11 +1,11 @@
 import json
 
 from dto.BaseJobDto import BaseJobDto
-from util.str_util import auto_str, no_html_tags_text
+from util.str_util import to_str, no_html_tags_text
 from util.json_util import to_obj
 
 
-@auto_str
+@to_str
 class RemotiveJobDto(BaseJobDto):
     def __init__(self, tags=None, job_type=None, publication_date=None,
                  candidate_required_location=None, salary=None, company_logo_url=None):
