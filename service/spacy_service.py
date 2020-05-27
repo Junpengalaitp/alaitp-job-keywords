@@ -40,9 +40,9 @@ def spacy_job_keywords(job_id: str, job_desc_text: str, keyword_dto_list):
     store_keyword_cache(job_keyword_dto)
 
 
-def spacy_job_keyword(job_id: str, job_desc_text: str):
+def spacy_job_keyword(job_id: str, job_desc_text: str, requestId: str):
     doc = nlp(job_desc_text)
-    job_keyword_dto = JobKeywordDTO(job_id)
+    job_keyword_dto = JobKeywordDTO(job_id, requestId)
     for ent in doc.ents:
         keyword = ent.text
         if len(keyword) > 1 or keyword in ('c', 'C', 'R', 'r'):
@@ -66,7 +66,7 @@ def spacy_job_keyword(job_id: str, job_desc_text: str):
 def get_keyword_by_category(job_keyword_dto_list):
     keyword_category_order = defaultdict(list)
     for job_keyword_dto in job_keyword_dto_list:
-        job_keyword_list = job_keyword_dto.get_keyword_list()
+        job_keyword_list = job_keyword_dto.keyword_list
         for keyword_dict in job_keyword_list:
             keyword_category_order[keyword_dict["category"]].append(keyword_dict["keyword"])
     return keyword_category_order

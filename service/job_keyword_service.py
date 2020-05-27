@@ -27,7 +27,7 @@ def get_job_keyword_dict(job_description_dict: dict) -> dict:
     else:
         keyword_dto_list = cached_keyword_dto_list
 
-    keyword_idx_by_job = {job_keyword_dto.job_id: job_keyword_dto.get_keyword_list() for job_keyword_dto in
+    keyword_idx_by_job = {job_keyword_dto.job_id: job_keyword_dto.keyword_list for job_keyword_dto in
                           keyword_dto_list}
     log.debug(f"keyword_idx_by_job complete: length: {len(keyword_idx_by_job)}")
     keyword_category_order = get_keyword_by_category(keyword_dto_list)

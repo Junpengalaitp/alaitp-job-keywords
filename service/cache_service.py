@@ -18,7 +18,7 @@ def get_job_search_cache(job_search_id: str):
 
 
 def store_keyword_cache(job_keyword_dto: JobKeywordDTO):
-    job_id = job_keyword_dto.get_job_id()
+    job_id = job_keyword_dto.job_id
     if not enable_cache:
         return
     if keyword_cache_exist(job_id):
