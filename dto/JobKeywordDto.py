@@ -1,6 +1,8 @@
+from util.json_util import jsonify
 from util.str_util import to_str
 
 
+@jsonify
 @to_str
 class JobKeywordDTO:
     def __init__(self, job_id: str = None, request_id: str = None, keyword_list: list = None):

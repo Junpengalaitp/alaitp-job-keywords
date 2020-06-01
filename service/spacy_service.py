@@ -7,7 +7,6 @@ import spacy
 from dto.JobKeywordDto import JobKeywordDTO
 from message.publisher import publish
 from service.cache_service import get_standard_word_cache, store_keyword_cache, get_standard_category_cache
-from util.json_util import to_json
 from util.timer import timeit
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -40,9 +39,9 @@ def spacy_job_keywords(job_id: str, job_desc_text: str, keyword_dto_list):
     store_keyword_cache(job_keyword_dto)
 
 
-def spacy_job_keyword(job_id: str, job_desc_text: str, requestId: str):
+def spacy_job_keyword(job_id: str, job_desc_text: str, request_id: str):
     doc = nlp(job_desc_text)
-    job_keyword_dto = JobKeywordDTO(job_id, requestId)
+    job_keyword_dto = JobKeywordDTO(job_id, request_id)
     for ent in doc.ents:
         keyword = ent.text
         if len(keyword) > 1 or keyword in ('c', 'C', 'R', 'r'):
@@ -59,7 +58,7 @@ def spacy_job_keyword(job_id: str, job_desc_text: str, requestId: str):
                             "startIdx": ent.start_char,
                             "endIdx": ent.end_char}
             job_keyword_dto.add_keyword(keyword_dict)
-    publish(to_json(job_keyword_dto))
+    publish(job_keyword_dto.to_json())
     return job_keyword_dto
 
 

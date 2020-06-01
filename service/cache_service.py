@@ -1,10 +1,9 @@
 import json
-
 from typing import Optional
 
 from config.redis_config import redis_template
 from dto.JobKeywordDto import JobKeywordDTO
-from util.json_util import to_obj, to_json
+from util.json_util import to_obj
 
 enable_cache = True
 
@@ -23,7 +22,7 @@ def store_keyword_cache(job_keyword_dto: JobKeywordDTO):
         return
     if keyword_cache_exist(job_id):
         return
-    redis_template.db(2).set(job_id, to_json(job_keyword_dto))
+    redis_template.db(2).set(job_id, job_keyword_dto.to_json())
 
 
 def get_keyword_cache(job_id: str):

@@ -7,5 +7,5 @@ import service.spacy_service
 executor = ProcessPoolExecutor(max_workers=os.cpu_count())
 
 
-def insert_msg(job_id: str, description: str, requestId: str):
-    executor.submit(service.spacy_service.spacy_job_keyword(job_id, description, requestId))
+def insert_msg(job_id: str, description: str, request_id: str):
+    executor.submit(service.spacy_service.spacy_job_keyword(job_id, description, request_id))
