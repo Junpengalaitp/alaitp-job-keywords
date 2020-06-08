@@ -20,9 +20,9 @@ connection = pika.BlockingConnection(conn_params)
 channel = connection.channel()
 
 channel.exchange_declare(KEYWORD_EXCHANGE, durable=True, exchange_type="direct")
-channel.queue_declare(KEYWORD_QUEUE, durable=True)
+channel.queue_declare(KEYWORD_QUEUE, durable=True, arguments={"x-message-ttl": 10000})
 channel.queue_bind(KEYWORD_QUEUE, KEYWORD_EXCHANGE, KEYWORD_KEY)
 
 channel.exchange_declare(JOB_EXCHANGE, durable=True, exchange_type="direct")
-channel.queue_declare(JOB_QUEUE, durable=True)
+channel.queue_declare(JOB_QUEUE, durable=True, arguments={"x-message-ttl": 10000})
 channel.queue_bind(JOB_QUEUE, JOB_EXCHANGE, JOB_KEY)

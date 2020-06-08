@@ -7,6 +7,7 @@ from service.cache_service import get_job_search_cache, get_standard_word_cache,
 from service.job_keyword_service import get_job_keyword_dict
 
 
+@DeprecationWarning
 @app.route('/keywords', methods=['POST'])
 def post_job_keywords():
     job_description_data = request.json
@@ -31,12 +32,14 @@ def get_job_keywords(job_search_id: str):
     return jsonify(job_keyword_dict)
 
 
+@DeprecationWarning
 @app.route("/standardize-word/<string:word>", methods=['GET'])
 def get_standard_word(word: str):
     standard_word = get_standard_word_cache(word)
     return standard_word
 
 
+@DeprecationWarning
 @app.route("/standardize-category/<string:standard_word>", methods=['GET'])
 def get_standard_category(standard_word: str):
     standard_category = get_standard_category_cache(standard_word)
