@@ -12,4 +12,4 @@ properties = pika.BasicProperties(headers={"content_type": "application/json"})
 
 def publish(msg):
     channel.basic_publish(exchange=KEYWORD_EXCHANGE, routing_key=KEYWORD_KEY, body=msg, properties=properties)
-    log.info(f"published -----> {msg}")
+    # log.info(f"published -----> {msg}")
