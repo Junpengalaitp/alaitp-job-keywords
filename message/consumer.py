@@ -1,9 +1,10 @@
 import json
 
+from loguru import logger
+
 from concurrency.ProcessPool import insert_msg
 from config.config_server import CONFIG
 from config.rabbit_config import channel
-from logger.logger import log
 
 JOB_QUEUE = CONFIG["job.queue"]
 
@@ -13,7 +14,7 @@ def receive_job(channel, method_frame, header_frame, body):
         job_map = json.loads(body)
         insert_msg(job_map["jobId"], job_map["jobDescriptionText"], job_map["requestId"])
     except:
-        log.error(f"message is invalid: {body}")
+        logger.error(f"message is invalid: {body}")
         return
     channel.basic_ack(delivery_tag=method_frame.delivery_tag)
 
