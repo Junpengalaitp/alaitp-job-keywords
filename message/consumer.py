@@ -13,8 +13,8 @@ def receive_job(channel, method_frame, header_frame, body):
     try:
         job_map = json.loads(body)
         insert_msg(job_map["jobId"], job_map["jobDescriptionText"], job_map["requestId"])
-    except:
-        logger.error(f"message is invalid: {body}")
+    except Exception as e:
+        logger.error(f"message is invalid: {body}, \nerror: {e}")
         return
     channel.basic_ack(delivery_tag=method_frame.delivery_tag)
 
