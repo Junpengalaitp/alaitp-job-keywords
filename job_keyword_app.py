@@ -1,10 +1,13 @@
 from random import randint
 
+from flask import Flask
 from waitress import serve
 
 from config.config_server import CONFIG
 from config.eureka_config import connect_eureka
-from controller import app
+
+
+app = Flask(__name__)
 
 
 def start_app():

@@ -1,43 +1,9 @@
-import json
-
 import logging
 import re
-import requests
-
-from database.sql_operation.job_keywords import select_all_standard_words
-
-
-def get_standard_word_map() -> dict:
-    df = select_all_standard_words()
-    standard_word_map = {}
-    for row in df.itertuples():
-        other_words = tuple(row.other_words.split(','))
-        standard_word_map[row.standard_word] = other_words
-    return standard_word_map
-
-
-standard_word_list = list(get_standard_word_map().keys())
-
-
-def get_standardized_keywords(keyword_dict: dict) -> dict:
-    r = requests.post(f"http://127.0.0.1:8888/word-standardization/standardize-word", data=json.dumps(keyword_dict))
-    standard_word_dict = r.text
-    return json.loads(standard_word_dict)
-
-
-def get_standard_word(keyword: str) -> str:
-    r = requests.get(f"http://127.0.0.1:8888/word-standardization/standardize-word/{keyword}")
-    standard_word = r.text
-    logging.info(f"standardize word: {keyword} to {standard_word}")
-    return standard_word
 
 
 def clean_punctuations(keywords_list: list) -> list:
     return [re.sub(r"[^a-zA-Z0-9.-/]+", ' ', keyword) for keyword in keywords_list]
-
-
-word = 'Node'
-s_word = get_standard_word(word)
 
 
 def get_cleaned_text(text):
@@ -61,6 +27,3 @@ def get_cleaned_text(text):
         logging.info(e)
 
     return text
-
-
-text = 'node.js'
