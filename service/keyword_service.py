@@ -63,9 +63,9 @@ def spacy_job_keyword(job_id: str, job_desc_text: str) -> JobKeywordDTO:
 
 def _invalid_word(word: str) -> bool:
     if len(word) == 1 and word not in SPECIAL_WORD:
-        return False
+        return True
     # filter out the keywords with punctuation in both ends except '.Net', 'C++', 'C#'
     if (not word[-1].isalnum() and (word[-1] not in ('+', '#'))) or (
             not word[0].isalnum() and word[:2].upper() != '.N'):
-        return False
-    return True
+        return True
+    return False
