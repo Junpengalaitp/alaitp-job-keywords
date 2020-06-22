@@ -13,17 +13,33 @@ model_path = os.path.join(BASE_DIR, 'spacy_model', 'job_model_sm')
 nlp = spacy.load(model_path)
 
 
-def generate_job_keyword(job_id: str, job_desc_text: str, request_id: str) -> None:
+def get_keywords_publish(job_map: dict):
+    job_id = job_map["jobId"]
+    description = job_map["jobDescriptionText"]
+    request_id = job_map["requestId"]
+    job_number = job_map["jobNumber"]
+    total_job_count = job_map["totalJobCount"]
+    request_end = job_map["requestEnd"]
+
+    job_keyword_dto = generate_job_keyword(job_id, description)
+    # set request id to job keywords and publish to mq
+    job_keyword_dto.request_id = request_id
+    # when all jobs of this request are complete, send an ending message
+    if request_end is True or job_number == total_job_count:
+        job_keyword_dto.request_end = True
+
+    publish(job_keyword_dto.to_json())
+
+
+def generate_job_keyword(job_id: str, job_desc_text: str) -> JobKeywordDTO:
     # first try if job keyword cache exists
     job_keyword_dto = get_keyword_cache(job_id)
+    # when no cache exists, generate keywords using spacy model
     if job_keyword_dto is None:
         job_keyword_dto = spacy_job_keyword(job_id, job_desc_text)
         # store job keywords in redis, key: job_id
         store_keyword_cache(job_keyword_dto)
-
-    # set request id to job keywords and publish to mq
-    job_keyword_dto.request_id = request_id
-    publish(job_keyword_dto.to_json())
+    return job_keyword_dto
 
 
 def spacy_job_keyword(job_id: str, job_desc_text: str) -> JobKeywordDTO:

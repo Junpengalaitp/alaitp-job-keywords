@@ -12,7 +12,7 @@ JOB_QUEUE = CONFIG["job.queue"]
 def receive_job(channel, method_frame, header_frame, body):
     try:
         job_map = json.loads(body)
-        insert_msg(job_map["jobId"], job_map["jobDescriptionText"], job_map["requestId"])
+        insert_msg(job_map)
     except Exception as e:
         logger.error(f"message is invalid: {body}, \nerror: {e}")
         return
