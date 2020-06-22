@@ -25,6 +25,8 @@ def publish_job_keywords(job_map: dict):
     job_keyword_dto = generate_job_keyword(job_id, description)
     # set request id to job keywords and publish to mq
     job_keyword_dto.request_id = request_id
+    job_keyword_dto.job_number = job_number
+    job_keyword_dto.total_job_count = total_job_count
     # when all jobs of this request are complete, send an ending message
     if request_end is True or job_number == total_job_count:
         job_keyword_dto.request_end = True
