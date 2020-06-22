@@ -1,4 +1,3 @@
-import json
 from typing import Optional
 
 from config.redis_config import redis_template
@@ -6,14 +5,6 @@ from dto.JobKeywordDto import JobKeywordDTO
 from util.json_util import to_obj
 
 enable_cache = True
-
-
-def get_job_search_cache(job_search_id: str):
-    cache = redis_template.db(1).hgetall(job_search_id)
-    if cache:
-        return {k.decode('utf-8'): json.loads(v) for k, v in cache.items()}
-    else:
-        return None
 
 
 def store_keyword_cache(job_keyword_dto: JobKeywordDTO):
@@ -61,26 +52,3 @@ def get_standard_category_cache(standard_word: str) -> Optional[str]:
         return cache.decode("utf-8")
     else:
         return
-
-
-def get_cached_keyword_dtos(job_id_list):
-    cached_keyword_dto_list, cached_keyword_dto_ids = [], []
-    if not enable_cache:
-        return cached_keyword_dto_list, cached_keyword_dto_ids
-    for job_id in job_id_list:
-        job_keyword_dto = get_keyword_cache(job_id)
-        if job_keyword_dto:
-            cached_keyword_dto_list.append(job_keyword_dto)
-            cached_keyword_dto_ids.append(job_keyword_dto.job_id)
-    return cached_keyword_dto_list, cached_keyword_dto_ids
-
-
-def get_keyword_cache_keys():
-    cache = redis_template.db(2).keys()
-    return [c.decode('utf-8') for c in cache] if cache else None
-
-
-if __name__ == '__main__':
-    cached = get_keyword_cache_keys()
-    print(len(cached))
-    print(cached)

@@ -1,0 +1,1 @@
+SPECIAL_WORD = ('c', 'C', 'R', 'r')  # programming language C and R

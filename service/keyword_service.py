@@ -2,6 +2,7 @@ import os
 
 import spacy
 
+from constant.special_word import SPECIAL_WORD
 from dto.JobKeywordDto import JobKeywordDTO
 from message.publisher import publish
 from service.cache_service import get_standard_word_cache, get_standard_category_cache, store_keyword_cache, \
@@ -13,7 +14,7 @@ model_path = os.path.join(BASE_DIR, 'spacy_model', 'job_model_sm')
 nlp = spacy.load(model_path)
 
 
-def get_keywords_publish(job_map: dict):
+def publish_job_keywords(job_map: dict):
     job_id = job_map["jobId"]
     description = job_map["jobDescriptionText"]
     request_id = job_map["requestId"]
@@ -47,18 +48,24 @@ def spacy_job_keyword(job_id: str, job_desc_text: str) -> JobKeywordDTO:
     job_keyword_dto = JobKeywordDTO(job_id)
     for ent in doc.ents:
         keyword = ent.text
-        if len(keyword) > 1 or keyword in ('c', 'C', 'R', 'r'):
-            # filter out the keywords with punctuation in both ends except '.Net', 'C++', 'C#'
-            if (not keyword[-1].isalnum() and (keyword[-1] not in ('+', '#'))) or (
-                    not keyword[0].isalnum() and keyword[:2].upper() != '.N'):
-                # log.debug(f"keyword with punctuation in the end filtered: {keyword}")
-                continue
-            standard_word = get_standard_word_cache(keyword)
-            standard_category = get_standard_category_cache(standard_word)
-            category = ent.label_ if standard_category is None else standard_category
-            keyword_dict = {"keyword": standard_word,
-                            "category": category,
-                            "startIdx": ent.start_char,
-                            "endIdx": ent.end_char}
-            job_keyword_dto.add_keyword(keyword_dict)
+        if _invalid_word(keyword):
+            continue
+        standard_word = get_standard_word_cache(keyword)
+        standard_category = get_standard_category_cache(standard_word)
+        category = ent.label_ if standard_category is None else standard_category
+        keyword_dict = {"keyword": standard_word,
+                        "category": category,
+                        "startIdx": ent.start_char,
+                        "endIdx": ent.end_char}
+        job_keyword_dto.add_keyword(keyword_dict)
     return job_keyword_dto
+
+
+def _invalid_word(word: str) -> bool:
+    if len(word) == 1 and word not in SPECIAL_WORD:
+        return False
+    # filter out the keywords with punctuation in both ends except '.Net', 'C++', 'C#'
+    if (not word[-1].isalnum() and (word[-1] not in ('+', '#'))) or (
+            not word[0].isalnum() and word[:2].upper() != '.N'):
+        return False
+    return True

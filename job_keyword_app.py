@@ -6,7 +6,7 @@ from waitress import serve
 from config.config_server import CONFIG
 from config.eureka_config import connect_eureka
 
-
+# flask server only for registering to eureka
 app = Flask(__name__)
 
 
