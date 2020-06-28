@@ -52,3 +52,4 @@ def get_standard_category_cache(standard_word: str) -> Optional[str]:
         return cache.decode("utf-8")
     else:
         return
+

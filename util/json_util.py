@@ -47,3 +47,33 @@ def convert_load(*args, **kwargs):
 def convert_dump(*args, **kwargs):
     args = (convert_json(args[0], underscore_to_camel),) + args[1:]
     json.dump(*args, **kwargs)
+
+
+class Solution:
+    def canPartition(self, nums) -> bool:
+        if not nums:
+            return False
+        _sum = sum(nums)
+        if _sum % 2 != 0:
+            return False
+
+        self.target = _sum // 2
+
+        return self.helper(nums)
+
+    def helper(self, nums, path=[]):
+        if sum(path) == self.target:
+            return True
+
+        for i in range(len(nums)):
+            path.append(nums[i])
+            if self.helper(nums[:i] + nums[i + 1:], path):
+                return True
+            path.pop()
+        return False
+
+
+if __name__ == '__main__':
+    s = Solution()
+    nums = [1, 9, 10, 12]
+    print(s.canPartition(nums))
