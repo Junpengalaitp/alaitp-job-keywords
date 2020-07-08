@@ -1,3 +1,7 @@
+"""
+Manual implementation of spring cloud config, request config on app start and store them in cache
+"""
+
 import requests
 
 config_server_url = "localhost:8810"

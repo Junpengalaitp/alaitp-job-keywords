@@ -1,4 +1,6 @@
+"""Job keyword generation using SpaCy and custom trained model"""
 import os
+from typing import Any
 
 import spacy
 
@@ -14,7 +16,9 @@ model_path = os.path.join(BASE_DIR, 'spacy_model', 'job_model_sm')
 nlp = spacy.load(model_path)
 
 
-def publish_job_keywords(job_map: dict):
+def process_job_keywords(job_map: dict) -> Any:
+    """Get the job keyword and publish it to mq"""
+
     job_id = job_map["jobId"]
     description = job_map["jobDescriptionText"]
     request_id = job_map["requestId"]
@@ -35,6 +39,7 @@ def publish_job_keywords(job_map: dict):
 
 
 def generate_job_keyword(job_id: str, job_desc_text: str) -> JobKeywordDTO:
+    """if job keyword is cache, return the cached value, else generate keywords using SpaCy model"""
     # first try if job keyword cache exists
     job_keyword_dto = get_keyword_cache(job_id)
     # when no cache exists, generate keywords using spacy model
@@ -46,6 +51,7 @@ def generate_job_keyword(job_id: str, job_desc_text: str) -> JobKeywordDTO:
 
 
 def spacy_job_keyword(job_id: str, job_desc_text: str) -> JobKeywordDTO:
+    """Generate JobKeywordDTO using SpaCy model"""
     doc = nlp(job_desc_text)
     job_keyword_dto = JobKeywordDTO(job_id)
     for ent in doc.ents:
@@ -64,6 +70,7 @@ def spacy_job_keyword(job_id: str, job_desc_text: str) -> JobKeywordDTO:
 
 
 def _invalid_word(word: str) -> bool:
+    """Filter out invalid words"""
     if len(word) == 1 and word not in SPECIAL_WORD:
         return True
     # filter out the keywords with punctuation in both ends except '.Net', 'C++', 'C#'
