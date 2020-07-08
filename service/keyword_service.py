@@ -3,6 +3,7 @@ import os
 from typing import Any
 
 import spacy
+from loguru import logger
 
 from constant.special_word import SPECIAL_WORD
 from dto.JobKeywordDto import JobKeywordDTO
@@ -36,6 +37,7 @@ def process_job_keywords(job_map: dict) -> Any:
         job_keyword_dto.request_end = True
 
     publish(job_keyword_dto.to_json())
+    logger.info(f"published {job_number}/{total_job_count}")
 
 
 def generate_job_keyword(job_id: str, job_desc_text: str) -> JobKeywordDTO:

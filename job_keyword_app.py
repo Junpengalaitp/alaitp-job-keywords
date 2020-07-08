@@ -23,5 +23,3 @@ def start_test_server():
     connect_eureka(SERVER_IP, PORT)
     # serve(app, host="localhost", port=PORT)
     app.run(host="localhost", port=PORT)
-
-
