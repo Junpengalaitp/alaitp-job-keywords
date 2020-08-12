@@ -4,11 +4,12 @@ Manual implementation of spring cloud config, request config on app start and st
 
 import requests
 
-config_server_url = "localhost:8810"
+env = "dev"
+config_server_url = "192.168.1.69:8810"
 
 
 def config_from_config_server():
-    r = requests.get(f"http://{config_server_url}/job-keyword/default")
+    r = requests.get(f"http://{config_server_url}/job-keyword/{env}")
     res = r.json()
     config = {}
     for cfg in res['propertySources']:

@@ -1,6 +1,6 @@
 import json
 
-from util.str_util import to_str
+from src.util.str_util import to_str
 
 
 @to_str

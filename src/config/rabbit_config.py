@@ -1,11 +1,11 @@
 import pika
 
-from config.config_server import CONFIG
+from src.config.config_server import CONFIG
 
 HOST = CONFIG["spring.rabbitmq.host"]
 PORT = CONFIG["spring.rabbitmq.port"]
 USER_NAME = CONFIG["spring.rabbitmq.username"]
-PASSWORD = CONFIG["spring.rabbitmq.password"]
+PASSWORD = str(CONFIG["spring.rabbitmq.password"])
 KEYWORD_EXCHANGE = CONFIG["keyword.exchange"]
 KEYWORD_QUEUE = CONFIG["keyword.queue"]
 KEYWORD_KEY = CONFIG["keyword.key"]

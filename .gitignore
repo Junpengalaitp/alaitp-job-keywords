@@ -8,5 +8,5 @@ env
 /.idea/modules.xml
 /.idea/vcs.xml
 /.idea/
-/spacy_model/job_model/
+/src/spacy_model/job_model/
 /logs/

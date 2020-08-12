@@ -1,8 +1,8 @@
 import json
 
-from dto.BaseJobDto import BaseJobDto
-from util.str_util import to_str, no_html_tags_text
-from util.json_util import to_obj
+from src.dto.BaseJobDto import BaseJobDto
+from src.util.json_util import to_obj
+from src.util.str_util import to_str, no_html_tags_text
 
 
 @to_str

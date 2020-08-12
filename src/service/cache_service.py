@@ -4,9 +4,9 @@ redis cache operations
 
 from typing import Optional
 
-from config.redis_config import redis_template
-from dto.JobKeywordDto import JobKeywordDTO
-from util.json_util import to_obj
+from src.config.redis_config import redis_template
+from src.dto.JobKeywordDto import JobKeywordDTO
+from src.util.json_util import to_obj
 
 enable_cache = True
 

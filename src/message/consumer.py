@@ -2,9 +2,9 @@ import json
 
 from loguru import logger
 
-from concurrency.ProcessPool import insert_msg
-from config.config_server import CONFIG
-from config.rabbit_config import channel
+from src.concurrency.ProcessPool import insert_msg
+from src.config.config_server import CONFIG
+from src.config.rabbit_config import channel
 
 JOB_QUEUE = CONFIG["job.queue"]
 

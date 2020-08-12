@@ -2,7 +2,7 @@
 import os
 from concurrent.futures.process import ProcessPoolExecutor, BrokenProcessPool
 
-from service.keyword_service import process_job_keywords
+from src.service.keyword_service import process_job_keywords
 
 """when job keyword are cached, the process won't use much cpu resources, so max_workers can be larger than cpu cores"""
 max_workers = os.cpu_count() * 4

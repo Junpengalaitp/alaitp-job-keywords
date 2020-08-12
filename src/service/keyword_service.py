@@ -5,10 +5,10 @@ from typing import Any
 import spacy
 from loguru import logger
 
-from constant.special_word import SPECIAL_WORD
-from dto.JobKeywordDto import JobKeywordDTO
-from message.publisher import publish
-from service.cache_service import get_standard_word_cache, get_standard_category_cache, store_keyword_cache, \
+from src.constant.special_word import SPECIAL_WORD
+from src.dto.JobKeywordDto import JobKeywordDTO
+from src.message.publisher import publish
+from src.service.cache_service import get_standard_word_cache, get_standard_category_cache, store_keyword_cache, \
     get_keyword_cache
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
