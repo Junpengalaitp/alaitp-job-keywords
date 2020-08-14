@@ -22,6 +22,7 @@ def receive_job(channel, method_frame, header_frame, body):
 def start_messaging():
     channel.basic_consume(JOB_QUEUE, receive_job)
     try:
+        logger.info("RabbitMQ channel start consuming")
         channel.start_consuming()
     except KeyboardInterrupt:
         channel.stop_consuming()

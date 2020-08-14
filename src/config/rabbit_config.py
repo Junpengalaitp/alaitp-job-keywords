@@ -14,7 +14,8 @@ JOB_QUEUE = CONFIG["job.queue"]
 JOB_KEY = CONFIG["job.key"]
 
 credentials = pika.PlainCredentials(USER_NAME, PASSWORD)
-conn_params = pika.ConnectionParameters(host=HOST, port=PORT, credentials=credentials)
+conn_params = pika.ConnectionParameters(host=HOST, port=PORT, credentials=credentials, heartbeat=60,
+                                        connection_attempts=2 ** 31 - 1, retry_delay=10)
 
 connection = pika.BlockingConnection(conn_params)
 channel = connection.channel()
