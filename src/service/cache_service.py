@@ -5,6 +5,7 @@ redis cache operations
 from typing import Optional
 
 from src.config.redis_config import redis_template
+from src.database.sql_operation.standard_word import select_standard_word
 from src.dto.JobKeywordDto import JobKeywordDTO
 from src.util.json_util import to_obj
 
@@ -43,7 +44,8 @@ def get_standard_word_cache(other_word: str) -> str:
     if cache:
         return cache.decode("utf-8")
     else:
-        return other_word
+        standard_word = select_standard_word(other_word)
+        return standard_word
 
 
 def store_standard_category_cache(standard_word: str, standard_category: str):
