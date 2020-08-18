@@ -1,6 +1,5 @@
-from loguru import logger
-
 from src.config.sql_config import conn
+from src.logger.logger import log
 
 
 def select_standard_word(other_word: str) -> str:
@@ -18,7 +17,7 @@ def select_standard_word(other_word: str) -> str:
         else:
             return select_standard_word_by_other_word(other_word)
     except:
-        logger.error(f"error word: {other_word}")
+        log.error(f"error word: {other_word}")
         return other_word
 
 

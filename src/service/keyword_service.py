@@ -3,10 +3,10 @@ import os
 from typing import Any
 
 import spacy
-from loguru import logger
 
 from src.constant.special_word import SPECIAL_WORD
 from src.dto.JobKeywordDto import JobKeywordDTO
+from src.logger.logger import log
 from src.message.publisher import publish
 from src.service.cache_service import get_standard_word_cache, get_standard_category_cache, store_keyword_cache, \
     get_keyword_cache
@@ -37,7 +37,7 @@ def process_job_keywords(job_map: dict) -> Any:
         job_keyword_dto.request_end = True
 
     publish(job_keyword_dto.to_json())
-    logger.info(f"published {job_number}/{total_job_count}")
+    log.info(f"published {job_number}/{total_job_count}")
 
 
 def generate_job_keyword(job_id: str, job_desc_text: str) -> JobKeywordDTO:
