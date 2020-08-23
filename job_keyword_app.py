@@ -1,5 +1,4 @@
-from src.message.consumer import start_messaging
+import src.message.consumer
 
 if __name__ == '__main__':
-    start_messaging()
-
+    src.message.consumer.start_messaging()

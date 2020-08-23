@@ -1,15 +1,19 @@
 """
 Manual implementation of spring cloud config, request config on app start and store them in cache
 """
+import sys
 
 import requests
 
-env = "dev"
-config_server_url = "192.168.1.69:8810"
+from src.logger.logger import log
 
 
 def config_from_config_server():
-    r = requests.get(f"http://{config_server_url}/job-keyword/{env}")
+    env = sys.argv[1]
+    config_server_url = sys.argv[2]
+    config_server_env_url = f"http://{config_server_url}/job-keyword/{env}"
+    log.info(f"get config from {config_server_env_url}")
+    r = requests.get(config_server_env_url)
     res = r.json()
     config = {}
     for cfg in res['propertySources']:
@@ -18,6 +22,3 @@ def config_from_config_server():
 
 
 CONFIG = config_from_config_server()
-
-if __name__ == '__main__':
-    print(config_from_config_server())
