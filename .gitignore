@@ -10,3 +10,4 @@ env
 /.idea/
 /src/spacy_model/job_model/
 /logs/
+__pycache__
