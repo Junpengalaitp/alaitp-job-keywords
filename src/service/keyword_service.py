@@ -45,7 +45,7 @@ def generate_job_keyword(job_id: str, job_desc_text: str) -> JobKeywordDTO:
     # first try if job keyword cache exists
     job_keyword_dto = get_keyword_cache(job_id)
     # when no cache exists, generate keywords using spacy model
-    if job_keyword_dto is None:
+    if not job_keyword_dto:
         job_keyword_dto = spacy_job_keyword(job_id, job_desc_text)
         # store job keywords in redis, key: job_id
         store_keyword_cache(job_keyword_dto)
