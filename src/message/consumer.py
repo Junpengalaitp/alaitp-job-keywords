@@ -1,11 +1,8 @@
 import json
 
 from src.concurrency.ProcessPool import insert_msg
-from src.config.config_server import CONFIG
-from src.config.rabbit_config import channel
+from src.config.rabbit_config import app_channel, JOB_QUEUE
 from src.logger.logger import log
-
-JOB_QUEUE = CONFIG["job.queue"]
 
 
 def receive_job(channel, method_frame, header_frame, body):
@@ -19,9 +16,9 @@ def receive_job(channel, method_frame, header_frame, body):
 
 
 def start_messaging():
-    channel.basic_consume(JOB_QUEUE, receive_job)
+    app_channel.basic_consume(JOB_QUEUE, receive_job)
     try:
         log.info("RabbitMQ channel start consuming")
-        channel.start_consuming()
+        app_channel.start_consuming()
     except KeyboardInterrupt:
-        channel.stop_consuming()
+        app_channel.stop_consuming()

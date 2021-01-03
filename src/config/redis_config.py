@@ -1,15 +1,15 @@
 import redis
 from redis import Redis
 
-from src.config.config_server import CONFIG
+from src.config.config_server import CONFIG_MAP
 
-HOST = CONFIG['spring.redis.host']
-PORT = CONFIG['spring.redis.port']
-DB0 = CONFIG['spring.redis.job.co.occurrence']
-DB1 = CONFIG['spring.redis.job.api']
-DB2 = CONFIG['spring.redis.database']
-DB3 = CONFIG['spring.redis.standard.word']
-DB4 = CONFIG['spring.redis.standard.category']
+HOST = CONFIG_MAP["spring"]["redis"]["host"]
+PORT = CONFIG_MAP["spring"]["redis"]["port"]
+DB0 = CONFIG_MAP["spring"]["redis"]["job"]["co"]["occurrence"]
+DB1 = CONFIG_MAP["spring"]["redis"]["job"]["api"]
+DB2 = CONFIG_MAP["spring"]["redis"]["database"]
+DB3 = CONFIG_MAP["spring"]["redis"]["standard"]["word"]
+DB4 = CONFIG_MAP["spring"]["redis"]["standard"]["category"]
 
 
 class RedisTemplate:

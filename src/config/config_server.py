@@ -1,24 +1,14 @@
-"""
-Manual implementation of spring cloud config, request config on app start and store them in cache
-"""
-import sys
+import yaml
+from kubernetes import client, config
 
-import requests
+# Configs can be set in Configuration class directly or using helper utility
+config.load_kube_config()
 
-from src.logger.logger import log
+v1 = client.CoreV1Api()
+ret = v1.read_namespaced_config_map("alaitp-shared", "default")
+config_yml = dict(ret.data)["application-dev.yml"]
 
+CONFIG_MAP = yaml.load(config_yml)
 
-def config_from_config_server():
-    env = sys.argv[1]
-    config_server_url = sys.argv[2]
-    config_server_env_url = f"http://{config_server_url}/job-keyword/{env}"
-    log.info(f"get config from {config_server_env_url}")
-    r = requests.get(config_server_env_url)
-    res = r.json()
-    config = {}
-    for cfg in res['propertySources']:
-        config.update(cfg['source'])
-    return config
-
-
-CONFIG = config_from_config_server()
+if __name__ == '__main__':
+    print(CONFIG_MAP)
