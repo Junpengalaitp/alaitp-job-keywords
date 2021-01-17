@@ -1,15 +1,8 @@
 import redis
 from redis import Redis
 
-from src.config.config_server import CONFIG_MAP
-
-HOST = CONFIG_MAP["spring"]["redis"]["host"]
-PORT = CONFIG_MAP["spring"]["redis"]["port"]
-DB0 = CONFIG_MAP["spring"]["redis"]["job"]["co"]["occurrence"]
-DB1 = CONFIG_MAP["spring"]["redis"]["job"]["api"]
-DB2 = CONFIG_MAP["spring"]["redis"]["database"]
-DB3 = CONFIG_MAP["spring"]["redis"]["standard"]["word"]
-DB4 = CONFIG_MAP["spring"]["redis"]["standard"]["category"]
+from src.config.config import REDIS_URL
+from src.logger.logger import log
 
 
 class RedisTemplate:
@@ -22,11 +15,12 @@ class RedisTemplate:
         return cls._instance
 
     def __init__(self):
-        self.co_occurrence = redis.ConnectionPool(host=HOST, port=PORT, db=DB0)
-        self.job_search_pool = redis.ConnectionPool(host=HOST, port=PORT, db=DB1)
-        self.job_keyword_pool = redis.ConnectionPool(host=HOST, port=PORT, db=DB2)
-        self.standard_word_pool = redis.ConnectionPool(host=HOST, port=PORT, db=DB3)
-        self.standard_category_pool = redis.ConnectionPool(host=HOST, port=PORT, db=DB4)
+        log.info(f"connecting redis using url: {REDIS_URL}")
+        self.co_occurrence = redis.ConnectionPool.from_url(url=REDIS_URL, db=0)
+        self.job_search_pool = redis.ConnectionPool.from_url(url=REDIS_URL, db=1)
+        self.job_keyword_pool = redis.ConnectionPool.from_url(url=REDIS_URL, db=2)
+        self.standard_word_pool = redis.ConnectionPool.from_url(url=REDIS_URL, db=3)
+        self.standard_category_pool = redis.ConnectionPool.from_url(url=REDIS_URL, db=4)
 
     def db(self, db: int) -> Redis:
         if db == 0:
