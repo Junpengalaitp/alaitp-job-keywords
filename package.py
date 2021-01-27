@@ -11,7 +11,7 @@ def git_pull():
 def build_image():
     run_cmd("docker build --tag=" + docker_tag + " --force-rm=true .")
     run_cmd("docker tag " + docker_tag +  " " + registry_tag)
-    run_cmd("docker push registry_tag")
+    run_cmd("docker push " + registry_tag)
 
 def k8s_deploy():
     run_cmd("kubectl delete deployment " + app_name)
