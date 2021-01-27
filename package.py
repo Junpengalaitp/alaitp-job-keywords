@@ -1,19 +1,21 @@
 import os
 
 app_name = "job-keyword"
-docker_tag = app_name + ":" + "prod"
+docker_tag = app_name
+registry = "localhost:5555"
+registry_tag = registry  + "/" + docker_tag
 
 def git_pull():
     run_cmd("git pull")
 
 def build_image():
-    print_cmd("eval $(minikube docker-env)")
-    print_cmd("docker build --tag=" + docker_tag + " --force-rm=true .")
-    print_cmd("eval $(minikube docker-env -u)")
+    run_cmd("docker build --tag=" + docker_tag + " --force-rm=true .")
+    run_cmd("docker tag " + docker_tag +  " " + registry_tag)
+    run_cmd("docker push registry_tag")
 
 def k8s_deploy():
-    print_cmd("kubectl delete deployment " + app_name)
-    print_cmd("kubectl create deployment " + app_name + " --image=" + docker_tag)
+    run_cmd("kubectl delete deployment " + app_name)
+    run_cmd("kubectl create deployment " + app_name + " --image=" + registry_tag)
 
 
 def run_sudo_cmd(cmd):
