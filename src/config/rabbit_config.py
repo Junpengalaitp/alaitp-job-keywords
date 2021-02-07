@@ -1,11 +1,8 @@
 import pika
 
-from src.config.config import RABBITMQ_URL
 from src.logger.logger import log
+from src.setting.settings import RABBITMQ_URL
 
-URL = "localhost:5672"
-USER_NAME = "junpeng"
-PASSWORD = "921102"
 KEYWORD_EXCHANGE = "keyword-exchange"
 KEYWORD_QUEUE = "keyword-queue"
 KEYWORD_KEY = "keyword-key"

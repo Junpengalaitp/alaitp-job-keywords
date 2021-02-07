@@ -1,0 +1,11 @@
+SQL_MQ_URL = "localhost:30001/alaitp"
+SQL_MQ_USER_NAME = "hejunpeng"
+SQL_MQ_PASSWORD = "921102"
+
+RABBIT_MQ_URL = "localhost:30003"
+RABBIT_MQ_USER_NAME = "hejunpeng"
+RABBIT_MQ_PASSWORD = "921102"
+
+SQL_URL = f"postgresql://{SQL_MQ_USER_NAME}:{SQL_MQ_PASSWORD}@{SQL_MQ_URL}"
+RABBITMQ_URL = f"amqp://{RABBIT_MQ_USER_NAME}:{RABBIT_MQ_PASSWORD}@{RABBIT_MQ_URL}/%2F"
+REDIS_URL = "redis://localhost:30002"

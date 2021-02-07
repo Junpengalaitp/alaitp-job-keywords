@@ -1,0 +1,49 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: test
+  name: alaitp-job-keyword-config
+data:
+  settings.py: |-
+    SQL_MQ_URL = "postgres/alaitp"
+    SQL_MQ_USER_NAME = "hejunpeng"
+    SQL_MQ_PASSWORD = "921102"
+
+    RABBIT_MQ_URL = "rabbitmq"
+    RABBIT_MQ_USER_NAME = "hejunpeng"
+    RABBIT_MQ_PASSWORD = "921102"
+
+    SQL_URL = f"postgresql://{SQL_MQ_USER_NAME}:{SQL_MQ_PASSWORD}@{SQL_MQ_URL}"
+    RABBITMQ_URL = f"amqp://{RABBIT_MQ_USER_NAME}:{RABBIT_MQ_PASSWORD}@{RABBIT_MQ_URL}/%2F"
+    REDIS_URL = "redis://redis"
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: test
+  name: job-keyword
+  labels:
+    app: job-keyword
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: job-keyword
+  template:
+    metadata:
+      labels:
+        app: job-keyword
+    spec:
+      containers:
+        - name: job-keyword
+          image: localhost:5555/job-keyword
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+            - name: job-keyword-config
+              mountPath: /project/src/setting
+      volumes:
+        - name: job-keyword-config
+          configMap:
+            name: alaitp-job-keyword-config

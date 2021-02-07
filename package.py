@@ -14,9 +14,7 @@ def build_image():
     run_cmd("docker push " + registry_tag)
 
 def k8s_deploy():
-    run_cmd("kubectl delete deployment " + app_name)
-    run_cmd("kubectl create deployment " + app_name + " --image=" + registry_tag)
-
+    run_cmd("kubectl apply -f kubernetes.yaml")
 
 def run_sudo_cmd(cmd):
     cmd = "sudo " + cmd

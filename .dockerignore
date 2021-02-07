@@ -1,4 +1,13 @@
+venv
+env
+logs
+venv/
+env/
+logs/
 /env
 /venv
 /logs
+/env/
+/venv/
+/logs/
 __pycache__

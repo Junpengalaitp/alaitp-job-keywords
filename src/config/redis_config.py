@@ -1,8 +1,8 @@
 import redis
 from redis import Redis
 
-from src.config.config import REDIS_URL
 from src.logger.logger import log
+from src.setting.settings import REDIS_URL
 
 
 class RedisTemplate:

@@ -1,3 +1,5 @@
+import traceback
+
 from src.config.sql_config import conn
 from src.logger.logger import log
 
@@ -17,7 +19,8 @@ def select_standard_word(other_word: str) -> str:
         else:
             return select_standard_word_by_other_word(other_word)
     except:
-        log.error(f"error word: {other_word}")
+        traceback.print_exc()
+        log.error(f"error other_word: {other_word}")
         return other_word
 
 
