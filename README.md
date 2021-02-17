@@ -4,7 +4,7 @@ alaitp-job-keywords
 
 ## Author
 
-* **Junpeng He** - *Initial work* - [alaitp](https://junpengalaitp.github.io/alaitp-frontend/)
+* **Junpeng He** - *Initial work* - [junpenghe.com](https://junpenghe.com)
 
 ## Main Feature
 * analysis job description to get keywords, and then it to websocket module
